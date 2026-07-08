@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Portfolio | Traditional Roots, Digital Expression</title>
+
+    <!-- Meta Tags for SEO -->
+    <meta name="description"
+        content="Personal creative portfolio combining UI/UX design, graphic design, video editing, and photography. Melding traditional Sri Lankan heritage motifs with a modern monochrome cinematic aesthetic.">
+    <meta name="keywords"
+        content="Portfolio, UI/UX Design, Graphic Design, Video Editing, Photography, Sri Lankan motifs, Monochrome design, GSAP animations">
+    <meta name="author" content="Creative Professional">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- CDNs: GSAP, ScrollTrigger, Lenis (Smooth Scroll), Lucide Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="loading">
+
+    <!-- Interactive Canvas for Silver & White Brush Strokes -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Custom Premium Custom Scrollbar Background Motif (Subtle overlay) -->
+    <div class="motif-overlay" id="global-motif"></div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#" class="logo" id="logo-link">
+                <span class="logo-circle"></span>
+                <span class="logo-text">HERITAGE.DIGITAL</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Expertise</a>
+                <a href="#timeline" class="nav-link">Timeline</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link nav-btn">Let's Connect</a>
+            </nav>
+            <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav-links">
+            <a href="#about" class="mobile-link">About</a>
+            <a href="#skills" class="mobile-link">Expertise</a>
+            <a href="#timeline" class="mobile-link">Timeline</a>
+            <a href="#projects" class="mobile-link">Projects</a>
+            <a href="#contact" class="mobile-link">Contact</a>
+        </nav>
+    </div>
+
+    <!-- MAIN CONTENT WRAPPER FOR LENIS -->
+    <main class="smooth-scroll-wrapper">
+
+        <!-- 1. HERO SECTION -->
+        <section class="hero-section" id="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-eyebrow font-syne scroll-reveal">MALEESHA RAJASOORIYA's PORTFOLIO</div>
+                    <h1 class="hero-title font-syne scroll-reveal">
+                        TRADITIONAL ROOTS,<br>
+                        <span class="text-glow">DIGITAL EXPRESSION.</span>
+                    </h1>
+                    <p class="hero-subtitle scroll-reveal">
+                        Creating digital experiences through design, motion, and visual storytelling.
+                    </p>
+                    <div class="hero-actions scroll-reveal">
+                        <a href="#projects" class="btn btn-primary">
+                            <span>Explore Work</span>
+                            <i data-lucide="arrow-down-right"></i>
+                        </a>
+                        <a href="#about" class="btn btn-secondary">Read Story</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Traditional Sri Lankan SVG Motif Drawing Background -->
+            <div class="hero-motif-container">
+                <svg id="hero-svg" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Traditional Liyawela/Lotus Inspired motif path (detailed below in js) -->
+                </svg>
+            </div>
+
+            <div class="hero-scroll-indicator">
+                <span class="indicator-mouse">
+                    <span class="indicator-wheel"></span>
+                </span>
+                <span class="indicator-text font-syne">SCROLL DOWN</span>
+            </div>
+        </section>
+
+        <!-- 2. PERSONAL INTRODUCTION SECTION -->
+        <section class="about-section" id="about">
+            <div class="container">
+                <div class="section-grid">
+                    <div class="section-header">
+                        <h2 class="section-title font-syne">THE STORY</h2>
+                        <span class="section-subtitle font-syne">Traditional roots, digital expression</span>
+                    </div>
+                    <div class="about-content">
+                        <h3 class="about-lead font-syne">
+                            Bridging the ancient artistry of Sri Lankan heritage with modern design and cinematic
+                            motion.
+                        </h3>
+                        <p class="about-body">
+                            I am a multidisciplinary creative professional specializing in UI/UX design, graphic design,
+                            video editing, and photography. My design philosophy is rooted in precision, patience, and
+                            visual storytelling—values inspired by traditional Sri Lankan craftsmanship and motifs.
+                        </p>
+                        <p class="about-body">
+                            By stripping away visual clutter and adopting a premium monochrome palette, I let the
+                            essence of raw design, cultural patterns, and high-fidelity project outcomes speak for
+                            themselves. Whether building immersive digital interfaces or directing cinematic motion, my
+                            goal is to spark emotional connections and deliver timeless results.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SKILLS & EXPERTISE SECTION -->
+        <section class="skills-section" id="skills">
+            <div class="container">
+                <div class="section-header-center">
+                    <h2 class="section-title font-syne text-center">EXPERTISE</h2>
+                    <p class="section-desc text-center">Core creative disciplines, focused competencies, and production
+                        tools.</p>
+                </div>
+
+                <!-- Dynamic Skills Grid (Populated by app.js) -->
+                <div class="skills-grid" id="skills-container"></div>
+
+                <!-- Tools and Technologies Section -->
+                <div class="tools-wrapper">
+                    <h3 class="tools-title font-syne text-center">THE CREATIVE TOOLKIT</h3>
+                    <!-- Dynamic Tools Grid (Populated by app.js) -->
+                    <div class="tools-grid" id="tools-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. EDUCATIONAL BACKGROUND TIMELINE -->
+        <section class="timeline-section" id="timeline">
+            <div class="container">
+                <div class="section-header-center">
+                    <h2 class="section-title font-syne text-center">TIMELINE</h2>
+                    <p class="section-desc text-center">Academic achievements and professional milestones that shaped my
+                        creative journey.</p>
+                </div>
+
+                <!-- Vertical Timeline Container (Populated by app.js) -->
+                <div class="timeline-container">
+                    <div class="timeline-line">
+                        <div class="timeline-line-fill"></div>
+                    </div>
+                    <div id="timeline-events"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PROJECT SHOWCASE SECTION -->
+        <section class="projects-section" id="projects">
+            <div class="container">
+                <div class="section-header-center">
+                    <h2 class="section-title font-syne text-center">SELECTED WORKS</h2>
+                    <p class="section-desc text-center">Exploring visual solutions and structural logic across diverse
+                        creative mediums.</p>
+                </div>
+
+                <!-- Category Filtering Tabs -->
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">All Works</button>
+                    <button class="filter-btn" data-filter="uiux">UI/UX Design</button>
+                    <button class="filter-btn" data-filter="graphic">Graphic Design</button>
+                    <button class="filter-btn" data-filter="video">Video Editing</button>
+                    <button class="filter-btn" data-filter="photography">Photography</button>
+                </div>
+
+                <!-- Dynamic Projects Grid (Populated by app.js) -->
+                <div class="projects-grid" id="projects-container"></div>
+            </div>
+        </section>
+
+        <!-- 6. CONTACT & SOCIAL MEDIA SECTION -->
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <div class="contact-content-wrapper">
+                    <div class="contact-header">
+                        <h2 class="contact-title font-syne">LET'S SHAPE<br>SOMETHING NEW.</h2>
+                        <p class="contact-subtitle">
+                            Available for select freelance engagements, creative collaborations, and professional
+                            opportunities.
+                        </p>
+                    </div>
+
+                    <!-- Copy Email Block -->
+                    <div class="email-banner" id="email-click-box">
+                        <div class="email-details">
+                            <span class="email-label">DIRECT EMAIL</span>
+                            <span class="email-address" id="email-addr">hello@heritagedigital.com</span>
+                        </div>
+                        <div class="email-action">
+                            <span class="copy-text" id="copy-status">CLICK TO COPY</span>
+                            <i data-lucide="copy" class="copy-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="social-links-container">
+                        <span class="social-title font-syne">FIND ME ON:</span>
+                        <div class="social-grid" id="social-links-grid">
+                            <!-- Dynamic Social Links (Populated by app.js) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Footer -->
+        <footer class="main-footer">
+            <div class="container footer-container">
+                <p class="copyright">&copy; 2026 HERITAGE.DIGITAL. All rights reserved.</p>
+                <p class="credits font-syne">Traditional Roots &times; Digital Expression</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- PROJECT DETAILS MODAL OVERLAY -->
+    <div class="modal-overlay" id="project-modal" aria-hidden="true" role="dialog">
+        <div class="modal-container">
+            <button class="modal-close" aria-label="Close modal">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-content" id="modal-content-body">
+                <!-- Dynamically loaded by app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Files -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
