@@ -61,14 +61,14 @@ function initApp() {
     const timelineEvents = document.getElementById("timeline-events");
     if (timelineEvents) {
         timelineEvents.innerHTML = PORTFOLIO_DATA.timeline.map((ev, i) => {
-            const L = i % 2 === 0;
-            return `<div class="timeline-item ${L ? 'left-align' : 'right-align'}">
+            const isLeft = i % 2 === 0;
+            return `<div class="timeline-item ${isLeft ? 'left-align' : 'right-align'}">
                 <div class="timeline-marker"></div>
                     <div class="${isLeft ? 'timeline-left' : 'timeline-right'}">
-                        <span class="timeline-year font-syne">${event.year}</span>
-                        <h3 class="timeline-title font-syne">${event.title}</h3>
-                        <div class="timeline-institution">${event.institution}</div>
-                        <p class="timeline-desc">${event.description}</p>
+                        <span class="timeline-year font-syne">${ev.year}</span>
+                        <h3 class="timeline-title font-syne">${ev.title}</h3>
+                        <div class="timeline-institution">${ev.institution}</div>
+                        <p class="timeline-desc">${ev.description}</p>
                     </div>
                 </div>
             `;
@@ -294,7 +294,11 @@ function initApp() {
             canvas.height = H * dpr;
             canvas.style.width = W + 'px';
             canvas.style.height = H + 'px';
-            ctx.scale(dpr, dpr);
+            if (ctx.setTransform) {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            } else {
+                ctx.scale(dpr, dpr);
+            }
             bufCanvas.width = W;
             bufCanvas.height = H;
             buildPattern();
