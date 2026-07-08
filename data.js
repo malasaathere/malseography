@@ -18,6 +18,15 @@ const PORTFOLIO_DATA = {
         ]
     },
 
+    assets: {
+        logo: "assets/images/logo.png"
+    },
+
+    site: {
+        brand: "HERITAGE.DIGITAL",
+        title: "Creative Portfolio | Traditional Roots, Digital Expression"
+    },
+
     skills: [
         {
             id: "uiux",

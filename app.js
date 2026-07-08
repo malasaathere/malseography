@@ -9,6 +9,25 @@ function initApp() {
     if (window.lucide) window.lucide.createIcons();
     document.body.classList.remove("loading");
 
+    // --- 1.a Apply configurable site data (logo, brand, title, email) ---
+    try {
+        if (window.PORTFOLIO_DATA) {
+            // Page title
+            if (PORTFOLIO_DATA.site && PORTFOLIO_DATA.site.title) document.title = PORTFOLIO_DATA.site.title;
+            // Logo images (header and preloader)
+            const logoPath = PORTFOLIO_DATA.assets && PORTFOLIO_DATA.assets.logo ? PORTFOLIO_DATA.assets.logo : null;
+            if (logoPath) {
+                document.querySelectorAll('.site-logo, .preloader-logo').forEach(img => { if (img) img.src = logoPath; });
+            }
+            // Header brand text
+            const brandEl = document.querySelector('.logo-text');
+            if (brandEl && PORTFOLIO_DATA.site && PORTFOLIO_DATA.site.brand) brandEl.textContent = PORTFOLIO_DATA.site.brand;
+            // Email copy
+            const emailAddr = document.getElementById('email-addr');
+            if (emailAddr && PORTFOLIO_DATA.personal && PORTFOLIO_DATA.personal.email) emailAddr.textContent = PORTFOLIO_DATA.personal.email;
+        }
+    } catch (e) { console.warn('Applying site data failed', e); }
+
     // --- 2. LENIS SMOOTH SCROLL ---
     const lenis = new Lenis({
         duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -264,7 +283,7 @@ function initApp() {
             patCtx.clearRect(0, 0, W, H);
 
             // Render the repeating pattern at its original size (scale = 1.0)
-            const scale = 0.2;
+            const scale = 1.0;
 
             // Create repeating pattern
             const pattern = patCtx.createPattern(bgImg, 'repeat');
@@ -414,3 +433,12 @@ if (document.readyState === "loading") {
 } else {
     initApp();
 }
+
+// Ensure preloader is removed once all resources are loaded
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => { try { preloader.remove(); } catch (e) { /* ignore */ } }, 700);
+    }
+});
