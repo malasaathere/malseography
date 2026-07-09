@@ -283,7 +283,7 @@ function initApp() {
             patCtx.clearRect(0, 0, W, H);
 
             // Render the repeating pattern at its original size (scale = 1.0)
-            const scale = 1.0;
+            const scale = 0.2;
 
             // Create repeating pattern
             const pattern = patCtx.createPattern(bgImg, 'repeat');
