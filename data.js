@@ -93,30 +93,30 @@ const PORTFOLIO_DATA = {
         { name: "Capture One / Lightroom", category: "Photography", level: 85 }
     ],
 
-    Journey: [
+    journey: [
         {
             year: "2026 - Present",
             title: "Assistant Media Director",
             institution: "Industrial Management Science Students' Association - University of Kelaniya",
-            description: "Spearheading the overall media strategy, visual identity, and cinematic storytelling for the student body within the Department of Industrial Management. Overseeing digital campaigns, coordinating media teams, and guiding the creative direction for university-wide events and departmental initiatives."
+            description: "Spearheading the overall media strategy, visual identity, and cinematic storytelling for the student body within the Department of Industrial Management. Overseeing digital content creation and strategic campaign execution."
         },
         {
             year: "2025 - Present",
             title: "UI/UX Designer & Systems Developer",
             institution: "University of Kelaniya - ideasprint 2025 & Independent Projects",
-            description: "DLed the UI/UX design and interactive prototyping for the "CeyLink" project, securing a finalist position in the IdeaSprint 2025 intra-departmental hackathon. Independently engineered "Pixel Rent," a complete camera renting system built with Java and MySQL, focusing on relational database management and structured inventory tracking."
+            description: "Led the UI/UX design and interactive prototyping for the \"CeyLink\" project, securing a finalist position in the IdeaSprint 2025 intra-departmental hackathon. Independently developed multiple design systems and digital tools."
         },
         {
             year: "2025 - 2026",
             title: "Media Coordinator for Level 1",
             institution: "Industrial Management Science Students' Association - University of Kelaniya",
-            description: "Handled foundational media tasks, digital content creation, and visual communication strategies to support departmental events and ongoing student body initiatives prior to advancing to the Assistant Media Director role."
+            description: "Handled foundational media tasks, digital content creation, and visual communication strategies to support departmental events and ongoing student body initiatives prior to promotion."
         },
         {
             year: "2025 - Present",
             title: "Undergraduate Innovator & Event Coordinator",
             institution: "Department of Industrial Management - Faculty of Science - University of Kelaniya",
-            description: "Pursuing studies merging industrial management with software development and cybersecurity protocols. Provided technical support for intra-departmental AI meetups and workshop series in collaboration with PyData."
+            description: "Pursuing studies merging industrial management with software development and cybersecurity protocols. Provided technical support for intra-departmental AI meetups and workshops."
         }
     ],
 
@@ -131,7 +131,7 @@ const PORTFOLIO_DATA = {
             details: {
                 problem: "Traditional cultural historical knowledge is scattered, inaccessible, and poorly presented to the modern generation, creating a disconnect from cultural heritage.",
                 requirements: "Develop a highly interactive, responsive mobile and desktop platform that preserves ancient artworks, scriptures, and architecture digitally, adhering strictly to accessibility standards.",
-                approach: "Conducted user research and designed a low-contrast dark-mode interface with subtle glowing elements. Incorporated custom SVG line drawings based on traditional wood carvings that reveal information interactively.",
+                approach: "Conducted user research and designed a low-contrast dark-mode interface with subtle glowing elements. Incorporated custom SVG line drawings based on traditional wood carving patterns.",
                 outcome: "An award-winning platform that saw a 45% increase in user engagement and high praise from regional historical societies. The interface makes exploration feel cinematic and educational."
             }
         },
@@ -145,7 +145,7 @@ const PORTFOLIO_DATA = {
             details: {
                 problem: "Premium brands often struggle to reflect cultural heritage without looking cluttered, old-fashioned, or visually busy.",
                 requirements: "Create a modern, luxury brand system that feels rooted in ancient heritage but appeals to contemporary, global consumers.",
-                approach: "Extracted the geometric shapes from historical Sigiriya wall art and merged them with a strict minimalist layouts. Used high-contrast serif typography paired with textured charcoal color schemes.",
+                approach: "Extracted the geometric shapes from historical Sigiriya wall art and merged them with strict minimalist layouts. Used high-contrast serif typography paired with textured backgrounds.",
                 outcome: "A premium visual identity including custom packaging, stationary, and editorial books that redefined the brand's perception in high-end international markets."
             }
         },
@@ -159,7 +159,7 @@ const PORTFOLIO_DATA = {
             details: {
                 problem: "Traditional craftspeople are disappearing, and static imagery fails to capture the immense patience, precision, and human story behind their craftsmanship.",
                 requirements: "Document the tactile, sound, and visual environment of rural pottery and wood carving artists, creating an emotional and immersive narrative.",
-                approach: "Filmed in high-definition monochrome to emphasize light and texture. Focused on sound design—the scraping of clay, carving of wood, breathing of the artisan—to build a rich, atmospheric pace.",
+                approach: "Filmed in high-definition monochrome to emphasize light and texture. Focused on sound design—the scraping of clay, carving of wood, breathing of the artisan—to build rhythm and intimacy.",
                 outcome: "Selected for multiple regional short film festivals. Praised for its editing rhythm, deep rich blacks, and poignant, minimalist narrative structure."
             }
         },
@@ -207,3 +207,5 @@ const PORTFOLIO_DATA = {
         }
     ]
 };
+
+export default PORTFOLIO_DATA;
