@@ -44,10 +44,10 @@ const PORTFOLIO_DATA = {
         {
             id: "graphic",
             title: "Graphic Design",
-            description: "Crafting bold brand identities, minimalist marketing collateral, and high-impact visual statements.",
+            description: "Crafting bold brand identities, minimalist marketing collateral, and high-impact visual statements, including dynamic event flyers.",
             icon: "pen-tool",
             focus: [
-                "Brand Strategy & Logo Design",
+                "Brand Strategy & Logo Design", 
                 "Visual Identity Systems",
                 "Editorial & Poster Layouts",
                 "Digital Artwork & Composition",
@@ -57,11 +57,11 @@ const PORTFOLIO_DATA = {
         {
             id: "video",
             title: "Video Editing",
-            description: "Directing pacing, motion, sound, and color to weave compelling cinematic narratives.",
+            description: "Directing pacing, motion, sound, and color to weave compelling cinematic narratives, utilizing industry-standard tools like Premiere Pro and After Effects.",
             icon: "video",
             focus: [
-                "Cinematic Video Editing",
-                "Motion Graphics & Title Design",
+                "Cinematic Video Editing & Teaser Scripting",
+                "Motion Graphics",
                 "Professional Color Grading",
                 "Sound Design & Spatial Audio Mix",
                 "Pacing & Story Development"
@@ -70,26 +70,26 @@ const PORTFOLIO_DATA = {
         {
             id: "photography",
             title: "Photography",
-            description: "Capturing light, structure, and human emotion through a minimalist and high-contrast lens.",
+            description: "Capturing light, structure, and human emotion through a minimalist and high-contrast lens, operating professional Sony and Fujifilm systems.",
             icon: "camera",
             focus: [
                 "Fine-Art Portraiture",
                 "Cinematic Event Documentation",
                 "Landscape & Architectural Composition",
                 "Lighting & Studio Setup",
-                "Creative Conceptual Photography"
+                "Creative Conceptual Photography",
+                "Professional Photo Editing"
             ]
         }
     ],
 
     tools: [
-        { name: "Figma", category: "Design", level: 95 },
+        { name: "Figma", category: "Design", level: 80 },
         { name: "Adobe Photoshop", category: "Design", level: 90 },
-        { name: "Adobe Illustrator", category: "Design", level: 85 },
         { name: "Adobe Premiere Pro", category: "Video", level: 90 },
         { name: "Adobe After Effects", category: "Video", level: 80 },
-        { name: "DaVinci Resolve", category: "Video", level: 85 },
-        { name: "Studio Gear & Lighting", category: "Photography", level: 90 },
+        { name: "DaVinci Resolve", category: "Video", level: 60 },
+        { name: "Studio Gear & Lighting", category: "Photography", level: 85 },
         { name: "Capture One / Lightroom", category: "Photography", level: 85 }
     ],
 
