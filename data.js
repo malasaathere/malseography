@@ -93,30 +93,30 @@ const PORTFOLIO_DATA = {
         { name: "Capture One / Lightroom", category: "Photography", level: 85 }
     ],
 
-    timeline: [
+    Journey: [
         {
-            year: "2024 - Present",
-            title: "Senior Creative Specialist",
-            institution: "Kandy Creative Agency",
-            description: "Leading visual design, directing promotional video campaigns, and designing custom UI/UX design systems for local and international brands."
+            year: "2026 - Present",
+            title: "Assistant Media Director",
+            institution: "Industrial Management Science Students' Association - University of Kelaniya",
+            description: "Spearheading the overall media strategy, visual identity, and cinematic storytelling for the student body within the Department of Industrial Management. Overseeing digital campaigns, coordinating media teams, and guiding the creative direction for university-wide events and departmental initiatives."
         },
         {
-            year: "2022 - 2024",
-            title: "Freelance Creative Designer",
-            institution: "Independent Practice",
-            description: "Developed comprehensive brand systems and digital products. Handled video editing and professional photography for corporate and creative portfolios."
+            year: "2025 - Present",
+            title: "UI/UX Designer & Systems Developer",
+            institution: "University of Kelaniya - ideasprint 2025 & Independent Projects",
+            description: "DLed the UI/UX design and interactive prototyping for the "CeyLink" project, securing a finalist position in the IdeaSprint 2025 intra-departmental hackathon. Independently engineered "Pixel Rent," a complete camera renting system built with Java and MySQL, focusing on relational database management and structured inventory tracking."
         },
         {
-            year: "2019 - 2022",
-            title: "Bachelor of Design (Honours)",
-            institution: "University of the Visual and Performing Arts, Colombo",
-            description: "Specialized in Graphic Design and Multimedia Production. Explored traditional Sri Lankan art styles and their adaptation to digital screens."
+            year: "2025 - 2026",
+            title: "Media Coordinator for Level 1",
+            institution: "Industrial Management Science Students' Association - University of Kelaniya",
+            description: "Handled foundational media tasks, digital content creation, and visual communication strategies to support departmental events and ongoing student body initiatives prior to advancing to the Assistant Media Director role."
         },
         {
-            year: "2018 - 2019",
-            title: "Diploma in UI/UX and Interactive Media",
-            institution: "National Institute of Design",
-            description: "Gained core fundamentals in wireframing, human-centered interaction design, color theory, and digital interface prototyping."
+            year: "2025 - Present",
+            title: "Undergraduate Innovator & Event Coordinator",
+            institution: "Department of Industrial Management - Faculty of Science - University of Kelaniya",
+            description: "Pursuing studies merging industrial management with software development and cybersecurity protocols. Provided technical support for intra-departmental AI meetups and workshop series in collaboration with PyData."
         }
     ],
 
