@@ -259,7 +259,7 @@ function initApp() {
 
         let W = 0, H = 0, dpr = 1;
         let mouseX = -9999, mouseY = -9999;
-        let easedMX = -9999, easedMY = -9999;
+        let easedMX = null, easedMY = null;
         let patternReady = false;
 
         const patCanvas = document.createElement('canvas');
@@ -269,11 +269,11 @@ function initApp() {
 
         // Load background image
         const bgImg = new Image();
-        bgImg.src = 'assets/images/background.png';
         bgImg.onload = () => {
             patternReady = true;
             resize();
         };
+        bgImg.src = 'assets/images/background.png';
 
         function buildPattern() {
             if (!patternReady) return;
@@ -282,25 +282,19 @@ function initApp() {
             patCanvas.height = H;
             patCtx.clearRect(0, 0, W, H);
 
-            // Render the repeating pattern at its original size (scale = 1.0)
-            const scale = 0.2;
+            // Cover-fit: scale image to fill canvas like CSS background-size: cover
+            const imgW = bgImg.naturalWidth;
+            const imgH = bgImg.naturalHeight;
+            const scale = Math.max(W / imgW, H / imgH);
+            const drawW = imgW * scale;
+            const drawH = imgH * scale;
+            const drawX = (W - drawW) / 2;
+            const drawY = (H - drawH) / 2;
 
-            // Create repeating pattern
-            const pattern = patCtx.createPattern(bgImg, 'repeat');
-            if (pattern) {
-                try {
-                    const matrix = new DOMMatrix();
-                    pattern.setTransform(matrix.scale(scale));
-                } catch (e) {
-                    console.warn("DOMMatrix setTransform not supported");
-                }
-            }
-
-            // Draw repeating pattern to patCanvas with grayscale + silver/white color grading
+            // Draw image to patCanvas with grayscale + silver/white color grading
             patCtx.save();
             patCtx.filter = 'grayscale(100%) brightness(1.3) contrast(1.6)';
-            patCtx.fillStyle = pattern || '#000';
-            patCtx.fillRect(0, 0, W, H);
+            patCtx.drawImage(bgImg, drawX, drawY, drawW, drawH);
             patCtx.restore();
         }
 
@@ -354,15 +348,17 @@ function initApp() {
                 return;
             }
 
-            // Initialize eased mouse position on first frame or if cursor enters
-            if (easedMX < -1000) {
-                easedMX = mouseX < -1000 ? W / 2 : mouseX;
-                easedMY = mouseY < -1000 ? H / 2 : mouseY;
-            }
-
             // Ease cursor coordinates for ultra-smooth movement
-            easedMX += (mouseX - easedMX) * EASE_SPEED;
-            easedMY += (mouseY - easedMY) * EASE_SPEED;
+            let targetX = mouseX < -1000 ? W / 2 : mouseX;
+            let targetY = mouseY < -1000 ? H / 2 : mouseY;
+            
+            if (easedMX === null) {
+                easedMX = targetX;
+                easedMY = targetY;
+            }
+            
+            easedMX += (targetX - easedMX) * EASE_SPEED;
+            easedMY += (targetY - easedMY) * EASE_SPEED;
 
             // ── Layer A: Dim ambient background (barely visible at rest) ──────────
             if (BASE_ALPHA > 0) {
