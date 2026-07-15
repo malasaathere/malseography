@@ -1,38 +1,30 @@
-name: Build, push container and deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pages: write
-      id-token: write
-      packages: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build and push Docker image to GHCR
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/malseography:latest
-
-      - name: Prepare `public` directory
+      - name: Prepare public directory
         run: |
           rm -rf public
           mkdir public
-          cp -R index.html style.css app.js assets public/ || true
+          cp index.html style.css app.js data.js public/
+          cp -R assets public/ || true
           if [ -f CNAME ]; then cp CNAME public/; fi
 
-      - name: Deploy to GitHub Pages (gh-pages branch)
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
