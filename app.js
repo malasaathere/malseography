@@ -132,7 +132,7 @@ function initApp() {
         if (!projectsContainer) return;
         const list = filter === "all" ? PORTFOLIO_DATA.projects : PORTFOLIO_DATA.projects.filter(p => p.category === filter);
         projectsContainer.innerHTML = list.map(p => `
-            <div class="project-card" data-project-id="${p.id}">
+            <div class="project-card" data-project-id="${p.id}" tabindex="0" role="button" aria-label="View project details: ${p.title}">
                 <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"></div>
                 <div class="project-info">
                     <div class="project-meta">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
@@ -140,8 +140,16 @@ function initApp() {
                     <p class="project-card-desc">${p.description}</p>
                 </div></div>`).join('');
         gsap.fromTo(".project-card", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" });
-        document.querySelectorAll(".project-card").forEach(card =>
-            card.addEventListener("click", () => openProjectDetails(parseInt(card.getAttribute("data-project-id")))));
+        document.querySelectorAll(".project-card").forEach(card => {
+            const id = parseInt(card.getAttribute("data-project-id"));
+            card.addEventListener("click", () => openProjectDetails(id));
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProjectDetails(id);
+                }
+            });
+        });
     }
     renderProjects();
     document.querySelectorAll(".filter-btn").forEach(btn => btn.addEventListener("click", function () {
@@ -228,7 +236,7 @@ function initApp() {
 
     // --- 8. COPY EMAIL ---
     const emailBox = document.getElementById("email-click-box"), emailAddr = document.getElementById("email-addr"), copyStatus = document.getElementById("copy-status");
-    if (emailBox && emailAddr && copyStatus) emailBox.addEventListener("click", () => {
+    const handleEmailCopy = () => {
         navigator.clipboard.writeText(emailAddr.innerText).then(() => {
             copyStatus.innerText = "COPIED!"; emailBox.style.borderColor = "var(--text-primary)";
             const ic = emailBox.querySelector(".copy-icon");
@@ -238,7 +246,17 @@ function initApp() {
                 if (ic && window.lucide) { ic.setAttribute("data-lucide", "copy"); window.lucide.createIcons(); }
             }, 2000);
         }).catch(e => console.error(e));
-    });
+    };
+
+    if (emailBox && emailAddr && copyStatus) {
+        emailBox.addEventListener("click", handleEmailCopy);
+        emailBox.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleEmailCopy();
+            }
+        });
+    }
 
     // --- 9. SOCIAL LINKS ---
     const SI = {
