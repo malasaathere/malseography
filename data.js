@@ -135,6 +135,8 @@ const PORTFOLIO_DATA = {
         { name: "Adobe Premiere Pro", level: 90, icon: "premierepro" },
         { name: "DaVinci Resolve", level: 85, icon: "davinci" },
         { name: "Adobe Lightroom", level: 85, icon: "lightroom" },
+        { name: "Adobe Photoshop", level: 75, icon: "photoshop" },
+        { name: "Adobe After Effects", level: 70, icon: "aftereffects" },
         { name: "Studio & Lighting Gear", level: 88, icon: "camera" }
     ],
 
