@@ -95,25 +95,12 @@ function initApp() {
             const isLeft = i % 2 === 0;
             return `<div class="timeline-item ${isLeft ? 'left-align' : 'right-align'}">
                 <div class="timeline-marker"></div>
-                ${isLeft ? `
-                    <div class="timeline-year-col timeline-left">
+                    <div class="${isLeft ? 'timeline-left' : 'timeline-right'}">
                         <span class="timeline-year font-syne">${ev.year}</span>
-                    </div>
-                    <div class="timeline-content-col timeline-right">
                         <h3 class="timeline-title font-syne">${ev.title}</h3>
                         <div class="timeline-institution">${ev.institution}</div>
                         <p class="timeline-desc">${ev.description}</p>
                     </div>
-                ` : `
-                    <div class="timeline-content-col timeline-left">
-                        <h3 class="timeline-title font-syne">${ev.title}</h3>
-                        <div class="timeline-institution">${ev.institution}</div>
-                        <p class="timeline-desc">${ev.description}</p>
-                    </div>
-                    <div class="timeline-year-col timeline-right">
-                        <span class="timeline-year font-syne">${ev.year}</span>
-                    </div>
-                `}
                 </div>
             `;
         }).join('');
