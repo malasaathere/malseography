@@ -131,17 +131,11 @@ const PORTFOLIO_DATA = {
     ],
 
     tools: [
-        { name: "Figma", category: "Design", level: 95, icon: "figma" },
-        { name: "Adobe Photoshop", category: "Design", level: 90, icon: "image" },
-        { name: "Adobe Illustrator", category: "Design", level: 85, icon: "pen-tool" },
-        { name: "Adobe Premiere Pro", category: "Video", level: 90, icon: "video" },
-        { name: "Adobe After Effects", category: "Video", level: 80, icon: "film" },
-        { name: "DaVinci Resolve", category: "Video", level: 85, icon: "aperture" },
-        { name: "Java & Swing", category: "Development", level: 85, icon: "coffee" },
-        { name: "Node.js", category: "Development", level: 80, icon: "server" },
-        { name: "MySQL & JDBC", category: "Development", level: 85, icon: "database" },
-        { name: "Studio Gear & Lighting", category: "Photography", level: 90, icon: "camera" },
-        { name: "Capture One / Lightroom", category: "Photography", level: 85, icon: "sliders" }
+        { name: "Figma", level: 95, icon: "figma" },
+        { name: "Adobe Premiere Pro", level: 90, icon: "premierepro" },
+        { name: "DaVinci Resolve", level: 85, icon: "davinci" },
+        { name: "Adobe Lightroom", level: 85, icon: "lightroom" },
+        { name: "Studio & Lighting Gear", level: 88, icon: "camera" }
     ],
 
     timeline: [
