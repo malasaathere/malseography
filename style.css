@@ -964,6 +964,10 @@ section {
     text-align: left;
 }
 
+.timeline-item.right-align .timeline-right {
+    grid-column: 2;
+}
+
 .timeline-year {
     font-size: 1.8rem;
     font-weight: 700;
@@ -1014,8 +1018,8 @@ section {
     .timeline-left {
         text-align: left;
     }
-    .timeline-year-col {
-        order: -1;
+    .timeline-item.right-align .timeline-right {
+        grid-column: 1;
     }
     .timeline-year {
         font-size: 1.6rem;
