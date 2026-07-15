@@ -51,6 +51,17 @@ function initApp() {
         });
     });
 
+    // --- 2.5 ABOUT LENSES ---
+    const lensesContainer = document.getElementById("about-lenses-container");
+    if (lensesContainer && PORTFOLIO_DATA.about && PORTFOLIO_DATA.about.lenses) {
+        lensesContainer.innerHTML = PORTFOLIO_DATA.about.lenses.map(lens => `
+            <div class="about-lens">
+                <h4 class="about-lens-title font-syne">${lens.title}</h4>
+                <p class="about-lens-desc">${lens.description}</p>
+            </div>
+        `).join('');
+    }
+
     // --- 3. SKILLS ---
     const skillsContainer = document.getElementById("skills-container");
     if (skillsContainer) skillsContainer.innerHTML = PORTFOLIO_DATA.skills.map(s => `
@@ -142,7 +153,7 @@ function initApp() {
     function openProjectDetails(id) {
         const p = PORTFOLIO_DATA.projects.find(x => x.id === id);
         if (!p || !modal || !modalContent) return;
-        const catMap = { uiux: "UI/UX Design", graphic: "Graphic Design", video: "Video Editing", photography: "Photography" };
+        const catMap = { uiux: "UI/UX Design", graphic: "Graphic Design", video: "Video Editing", photography: "Photography", software: "Software Engineering", cybersecurity: "Cybersecurity & Networking" };
         modalContent.innerHTML = `
             <span class="modal-project-cat font-syne">${catMap[p.category] || ''}</span>
             <h2 class="modal-project-title font-syne">${p.title}</h2>
@@ -162,6 +173,23 @@ function initApp() {
     if (modalClose) modalClose.addEventListener("click", closeModal);
     if (modal) modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
     document.addEventListener("keydown", e => { if (e.key === "Escape" && modal?.classList.contains("active")) closeModal(); });
+
+    // --- 6.5 CODE & REPOSITORIES ---
+    const reposContainer = document.getElementById("repos-container");
+    if (reposContainer && PORTFOLIO_DATA.repos) {
+        reposContainer.innerHTML = PORTFOLIO_DATA.repos.map(repo => `
+            <a href="${repo.url}" target="_blank" rel="noopener noreferrer" class="repo-card">
+                <div class="repo-card-header">
+                    <i data-lucide="folder-git-2" style="width:24px;height:24px;" class="repo-icon"></i>
+                    <i data-lucide="arrow-up-right" style="width:16px;height:16px;" class="repo-arrow"></i>
+                </div>
+                <h3 class="repo-card-title font-syne">${repo.title}</h3>
+                <p class="repo-card-desc">${repo.description}</p>
+                <span class="repo-link-text font-syne">View on GitHub →</span>
+            </a>
+        `).join('');
+        if (window.lucide) window.lucide.createIcons();
+    }
 
     // --- 7. HERO SVG ---
     const heroSvg = document.getElementById("hero-svg");
@@ -234,6 +262,12 @@ function initApp() {
     // --- 11. SCROLL REVEALS ---
     gsap.utils.toArray(".scroll-reveal").forEach(el => gsap.fromTo(el, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }));
     gsap.utils.toArray(".section-title,.section-subtitle,.section-desc").forEach(el => gsap.fromTo(el, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" } }));
+
+    // --- 11.5 ABOUT LENSES SCROLL REVEAL ---
+    gsap.utils.toArray(".about-lens").forEach((el, i) => gsap.fromTo(el, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.8, delay: i * 0.15, scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" } }));
+
+    // --- 11.6 REPO CARDS SCROLL REVEAL ---
+    gsap.utils.toArray(".repo-card").forEach((el, i) => gsap.fromTo(el, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.7, delay: i * 0.12, scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" } }));
 
 
     // ═══════════════════════════════════════════════════════════════════════════

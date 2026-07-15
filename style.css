@@ -673,6 +673,42 @@ section {
     font-weight: 300;
 }
 
+/* About Lenses (Three Pillars) */
+.about-lenses {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+    margin-top: 3.2rem;
+}
+
+.about-lens {
+    padding: 2.8rem 3.2rem;
+    border-left: 2px solid var(--border-light);
+    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+    border-radius: 0 4px 4px 0;
+    transition: var(--transition-smooth);
+}
+
+.about-lens:hover {
+    border-left-color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+    box-shadow: -2px 0 20px rgba(255,255,255,0.05);
+}
+
+.about-lens-title {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+}
+
+.about-lens-desc {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.7;
+}
+
 /* --- SKILLS SECTION --- */
 .skills-grid {
     display: grid;
@@ -1073,6 +1109,125 @@ section {
     font-weight: 300;
     line-height: 1.5;
     flex-grow: 1;
+}
+
+/* --- CODE & REPOSITORIES SECTION --- */
+.repos-section {
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.repos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
+    margin-bottom: 5rem;
+}
+
+.repo-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    background-color: var(--bg-medium);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    padding: 3.6rem;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-primary), transparent);
+    transform: scaleX(0);
+    transition: var(--transition-fast);
+}
+
+.repo-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-light);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255,255,255,0.03);
+}
+
+.repo-card:hover::before {
+    transform: scaleX(1);
+}
+
+.repo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.repo-icon {
+    color: var(--text-secondary);
+    transition: var(--transition-fast);
+}
+
+.repo-card:hover .repo-icon {
+    color: var(--text-primary);
+}
+
+.repo-arrow {
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    transform: translate(0, 0);
+}
+
+.repo-card:hover .repo-arrow {
+    color: var(--text-primary);
+    transform: translate(3px, -3px);
+}
+
+.repo-card-title {
+    font-size: 2rem;
+    color: var(--text-primary);
+}
+
+.repo-card-desc {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.repo-link-text {
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    margin-top: 0.8rem;
+}
+
+.repo-card:hover .repo-link-text {
+    color: var(--text-primary);
+}
+
+.repos-cta {
+    display: flex;
+    justify-content: center;
+}
+
+.repos-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+@media (max-width: 600px) {
+    .repos-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* --- CONTACT SECTION --- */
