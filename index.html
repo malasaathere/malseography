@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maleesha's Portfolio | Obsessed with the process. Destined with the progress.</title>
+    <title>MALSEOGRAPHY | Obsessed with the process. Destined for the progress.</title>
 
     <!-- Meta Tags for SEO -->
     <meta name="description"
-        content="Personal creative portfolio combining UI/UX design, graphic design, video editing, and photography. Melding traditional Sri Lankan heritage motifs with a modern monochrome cinematic aesthetic.">
+        content="MALSEOGRAPHY — Personal creative portfolio of Maleesha Rajasooriya. UI/UX design, graphic design, software engineering, cybersecurity, video editing, and photography. Creating digital experiences through design, motion, and visual storytelling, backed by secure and robust software architecture.">
     <meta name="keywords"
-        content="Portfolio, UI/UX Design, Graphic Design, Video Editing, Photography, Sri Lankan motifs, Monochrome design, GSAP animations">
-    <meta name="author" content="Creative Professional">
+        content="Portfolio, UI/UX Design, Graphic Design, Software Engineering, Cybersecurity, Video Editing, Photography, Monochrome design, GSAP animations, Maleesha Rajasooriya">
+    <meta name="author" content="Maleesha Rajasooriya">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,8 +60,9 @@
             <nav class="nav-links">
                 <a href="#about" class="nav-link">About</a>
                 <a href="#skills" class="nav-link">Expertise</a>
-                <a href="#timeline" class="nav-link">Education</a>
+                <a href="#timeline" class="nav-link">Timeline</a>
                 <a href="#projects" class="nav-link">Projects</a>
+                <a href="#repos" class="nav-link">Code</a>
                 <a href="#contact" class="nav-link nav-btn">Let's Connect</a>
             </nav>
             <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
@@ -78,6 +79,7 @@
             <a href="#skills" class="mobile-link">Expertise</a>
             <a href="#timeline" class="mobile-link">Timeline</a>
             <a href="#projects" class="mobile-link">Projects</a>
+            <a href="#repos" class="mobile-link">Code</a>
             <a href="#contact" class="mobile-link">Contact</a>
         </nav>
     </div>
@@ -91,11 +93,12 @@
                 <div class="hero-content">
                     <div class="hero-eyebrow font-syne scroll-reveal">STEP INTO MALEESHA'S UNIVERSE</div>
                     <h1 class="hero-title font-syne scroll-reveal">
-                        TRADITIONAL ROOTS,<br>
-                        <span class="text-glow">DIGITAL EXPRESSION.</span>
+                        MALSEOGRAPHY |<br>
+                        <span class="text-glow">MALEESHA RAJASOORIYA</span>
                     </h1>
                     <p class="hero-subtitle scroll-reveal">
-                        Creating digital experiences through design, motion, and visual storytelling.
+                        Creating digital experiences through design, motion, and visual storytelling, backed by secure
+                        and robust software architecture.
                     </p>
                     <div class="hero-actions scroll-reveal">
                         <a href="#projects" class="btn btn-primary">
@@ -128,24 +131,23 @@
                 <div class="section-grid">
                     <div class="section-header">
                         <h2 class="section-title font-syne">THE STORY</h2>
-                        <span class="section-subtitle font-syne">Traditional roots, digital expression</span>
+                        <span class="section-subtitle font-syne">Obsessed with the process. Destined for the
+                            progress.</span>
                     </div>
                     <div class="about-content">
                         <h3 class="about-lead font-syne">
-                            Bridging the ancient artistry of Sri Lankan heritage with modern design and cinematic
-                            motion.
+                            Bridging modern digital design aesthetics with dynamic cinematic motion and secure system
+                            architecture.
                         </h3>
                         <p class="about-body">
-                            I am a multidisciplinary creative professional specializing in UI/UX design, graphic design,
-                            video editing, and photography. My design philosophy is rooted in precision, patience, and
-                            visual storytelling—values inspired by traditional Sri Lankan craftsmanship and motifs.
+                            I am a multidisciplinary professional currently studying in the Department of Industrial
+                            Management at the University of Kelaniya. My philosophy is rooted in precision, analytical
+                            problem-solving, and clean digital execution. I navigate the digital space through three
+                            distinct lenses:
                         </p>
-                        <p class="about-body">
-                            By stripping away visual clutter and adopting a premium monochrome palette, I let the
-                            essence of raw design, cultural patterns, and high-fidelity project outcomes speak for
-                            themselves. Whether building immersive digital interfaces or directing cinematic motion, my
-                            goal is to spark emotional connections and deliver timeless results.
-                        </p>
+
+                        <!-- Three Lenses Sub-sections (Populated by app.js) -->
+                        <div class="about-lenses" id="about-lenses-container"></div>
                     </div>
                 </div>
             </div>
@@ -191,13 +193,13 @@
             </div>
         </section>
 
-        <!-- 5. PROJECT SHOWCASE SECTION -->
+        <!-- 5. PROJECT SHOWCASE SECTION (ALL WORKS / CASE STUDIES) -->
         <section class="projects-section" id="projects">
             <div class="container">
                 <div class="section-header-center">
-                    <h2 class="section-title font-syne text-center">SELECTED WORKS</h2>
-                    <p class="section-desc text-center">Exploring visual solutions and structural logic across diverse
-                        creative mediums.</p>
+                    <h2 class="section-title font-syne text-center">ALL WORKS</h2>
+                    <p class="section-desc text-center">Case studies exploring visual solutions and structural logic
+                        across diverse creative mediums.</p>
                 </div>
 
                 <!-- Category Filtering Tabs -->
@@ -205,6 +207,7 @@
                     <button class="filter-btn active" data-filter="all">All Works</button>
                     <button class="filter-btn" data-filter="uiux">UI/UX Design</button>
                     <button class="filter-btn" data-filter="graphic">Graphic Design</button>
+                    <button class="filter-btn" data-filter="software">Software</button>
                     <button class="filter-btn" data-filter="video">Video Editing</button>
                     <button class="filter-btn" data-filter="photography">Photography</button>
                 </div>
@@ -214,15 +217,37 @@
             </div>
         </section>
 
-        <!-- 6. CONTACT & SOCIAL MEDIA SECTION -->
+        <!-- 6. CODE & REPOSITORIES SECTION -->
+        <section class="repos-section" id="repos">
+            <div class="container">
+                <div class="section-header-center">
+                    <h2 class="section-title font-syne text-center">CODE & REPOSITORIES</h2>
+                    <p class="section-desc text-center">Open-source projects and development work.</p>
+                </div>
+
+                <!-- Dynamic Repos List (Populated by app.js) -->
+                <div class="repos-grid" id="repos-container"></div>
+
+                <div class="repos-cta">
+                    <a href="https://github.com/malasaathere" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-secondary repos-explore-btn font-syne" id="explore-repos-btn">
+                        <i data-lucide="github" style="width:20px;height:20px;"></i>
+                        <span>Explore All GitHub Repositories</span>
+                        <i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. CONTACT & SOCIAL MEDIA SECTION -->
         <section class="contact-section" id="contact">
             <div class="container">
                 <div class="contact-content-wrapper">
                     <div class="contact-header">
                         <h2 class="contact-title font-syne">LET'S SHAPE<br>SOMETHING NEW.</h2>
                         <p class="contact-subtitle">
-                            Available for select freelance engagements, creative collaborations, and professional
-                            opportunities.
+                            Available for select freelance engagements, creative collaborations, and technical
+                            development opportunities.
                         </p>
                     </div>
 
@@ -253,7 +278,7 @@
         <footer class="main-footer">
             <div class="container footer-container">
                 <p class="copyright">&copy; 2026 MALSEOGRAPHY. All rights reserved.</p>
-                <p class="credits font-syne">Traditional Roots &times; Digital Expression</p>
+                <p class="credits font-syne">Obsessed with the process &times; Destined for the progress</p>
             </div>
         </footer>
 
