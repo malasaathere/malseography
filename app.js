@@ -77,9 +77,10 @@ function initApp() {
     if (toolsContainer) {
         toolsContainer.innerHTML = PORTFOLIO_DATA.tools.map(t => `
             <div class="tool-item">
-                <div class="tool-info"><span class="tool-name">${t.name}</span><span class="tool-percent">${t.level}%</span></div>
+                <div class="tool-info"><span class="tool-name"><i data-lucide="${t.icon}" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;color:var(--text-muted);"></i>${t.name}</span><span class="tool-percent">${t.level}%</span></div>
                 <div class="tool-progress-bg"><div class="tool-progress-fill" data-percent="${t.level}"></div></div>
             </div>`).join('');
+        if (window.lucide) window.lucide.createIcons();
         gsap.utils.toArray(".tool-progress-fill").forEach(f =>
             gsap.to(f, {
                 scaleX: f.getAttribute("data-percent") / 100,

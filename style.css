@@ -868,6 +868,8 @@ section {
 
 .tool-name {
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
 }
 
 .tool-percent {
