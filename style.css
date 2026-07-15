@@ -739,8 +739,8 @@ section {
 /* --- SKILLS SECTION --- */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
     margin-bottom: 12rem;
 }
 
@@ -749,11 +749,13 @@ section {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-subtle);
-    padding: 2.4rem;
+    padding: 4rem;
     border-radius: 4px;
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .skill-card:hover {
@@ -781,7 +783,7 @@ section {
 }
 
 .skill-icon-box {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     color: var(--text-secondary);
     transition: var(--transition-fast);
 }
@@ -792,40 +794,43 @@ section {
 }
 
 .skill-card-title {
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.6rem;
 }
 
 .skill-card-desc {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--text-secondary);
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     font-weight: 300;
+    line-height: 1.6;
 }
 
 .skill-focus-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1.2rem;
+    margin-top: auto;
 }
 
 .skill-focus-item {
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     color: var(--text-secondary);
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    line-height: 1.4;
+    align-items: flex-start;
+    gap: 1.2rem;
+    line-height: 1.5;
 }
 
 .skill-focus-dot {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     flex-shrink: 0;
     background-color: var(--text-muted);
     transition: var(--transition-fast);
+    margin-top: 0.6rem;
 }
 
 .skill-card:hover .skill-focus-dot {
