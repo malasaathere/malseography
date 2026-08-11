@@ -2073,9 +2073,13 @@ section {
     }
 
     .personal-name {
-        font-size: clamp(3.4rem, 12vw, 5.4rem);
-        line-height: 1;
-        overflow-wrap: anywhere;
+        max-width: 100%;
+        margin-inline: auto;
+        font-size: clamp(3rem, 9.6vw, 4.2rem);
+        line-height: 1.08;
+        overflow-wrap: normal;
+        word-break: normal;
+        text-align: center;
     }
 
     .hero-subtitle {
@@ -2124,6 +2128,54 @@ section {
 
     .section-grid {
         gap: 3.6rem;
+    }
+
+    .about-section .section-header,
+    .about-content {
+        text-align: center;
+    }
+
+    .about-section .section-grid,
+    .about-section .about-lead,
+    .about-section .about-body,
+    .about-section .about-lens,
+    .about-section .about-lens-title,
+    .about-section .about-lens-desc {
+        text-align: center;
+    }
+
+    .about-section .about-lens {
+        border-left: 0;
+        border-top: 1px solid var(--border-light);
+        border-radius: 4px;
+    }
+
+    .about-section .section-title {
+        font-size: clamp(2.6rem, 8vw, 3.2rem);
+    }
+
+    .about-section .section-subtitle {
+        max-width: 32rem;
+        margin: 1.2rem auto 0;
+        font-size: 1.05rem;
+        line-height: 1.65;
+        letter-spacing: 0.12em;
+    }
+
+    .about-lead {
+        max-width: 34rem;
+        margin: 0 auto 2.8rem;
+        font-size: clamp(2rem, 6vw, 2.4rem);
+        line-height: 1.42;
+        text-wrap: balance;
+    }
+
+    .about-body {
+        max-width: 36rem;
+        margin: 0 auto 2rem;
+        font-size: 1.45rem;
+        line-height: 1.75;
+        text-wrap: pretty;
     }
 
     .skills-grid,
@@ -2322,6 +2374,7 @@ section {
         object-position: 52% 30%;
         filter: grayscale(1) contrast(1.08) brightness(1.08);
     }
+
 }
 
 @media (max-width: 430px) {
@@ -2342,7 +2395,7 @@ section {
     }
 
     .personal-name {
-        font-size: clamp(3.2rem, 12.5vw, 4.7rem);
+        font-size: clamp(2.8rem, 9.4vw, 3.8rem);
     }
 
     .contact-title {
