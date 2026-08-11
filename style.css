@@ -40,7 +40,7 @@ html {
 
 body {
     font-family: var(--font-sans);
-    background-color: transparent; /* Canvas owns the background */
+    background-color: var(--bg-dark);
     color: var(--text-primary);
     font-size: 1.6rem;
     line-height: 1.6;
@@ -72,7 +72,7 @@ a {
     transition: color 0.3s ease;
 }
 
-/* Faint permanent background pattern - Hidden as requested for solid black background */
+/* The lotus artwork is applied directly to the body for stable fixed coverage. */
 body::before {
     content: '';
     position: fixed;
@@ -80,9 +80,6 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('assets/images/background.png');
-    background-repeat: repeat;
-    background-size: 1000px;
     opacity: 0;
     z-index: 0;
     pointer-events: none;
@@ -98,7 +95,297 @@ body::before {
     height: 100vh;
     z-index: -1;       /* Behind page content */
     pointer-events: none;
-    opacity: 0.5;      /* 50% opacity to prevent distraction */
+    display: none;
+    opacity: 0;
+}
+
+.lotus-background {
+    --lotus-x: 0px;
+    --lotus-y: 0px;
+    --lotus-rotate: 0deg;
+    --lotus-scale: 1.04;
+    --lotus-light: 1;
+    --pattern-fill: 0.75;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.lotus-background.is-bloomed {
+    opacity: 1;
+}
+
+.lotus-background::after {
+    display: none;
+}
+
+.ambient-mark {
+    position: absolute;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+}
+
+.interactive-stars {
+    --star-x: 0px;
+    --star-y: 0px;
+    --star-rotate: 0deg;
+    position: absolute;
+    inset: -4%;
+    transform: translate3d(var(--star-x), var(--star-y), 0) rotate(var(--star-rotate));
+    transform-origin: center;
+    will-change: transform;
+}
+
+.interactive-star {
+    position: absolute;
+    width: var(--star-size, 2px);
+    height: var(--star-size, 2px);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, var(--star-alpha, 0.28));
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.22);
+}
+
+.falling-star {
+    position: absolute;
+    left: var(--fall-left);
+    top: var(--fall-top);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    animation: falling-star-travel var(--fall-duration) cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+
+.falling-star::after {
+    content: '';
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: var(--tail-length);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5));
+    transform: translateY(-50%) rotate(var(--tail-angle));
+    transform-origin: right center;
+}
+
+@keyframes falling-star-travel {
+    0% { opacity: 0; transform: translate3d(0, 0, 0) scale(0.6); }
+    12% { opacity: 0.85; }
+    72% { opacity: 0.72; }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--fall-x), var(--fall-y), 0) scale(0.9);
+    }
+}
+
+.brand-lotus-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(circle, #000 56%, transparent 74%);
+    mask-image: radial-gradient(circle, #000 56%, transparent 74%);
+    opacity: 0;
+    transform: scale(0.18) rotate(-8deg);
+    transform-origin: center;
+}
+
+.lotus-background.is-bloomed .brand-lotus-image {
+    animation: pattern-lotus-bloom 1.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lotus-copy-one {
+    top: 13%; left: 5%; width: clamp(24rem, 30vmin, 40rem);
+    opacity: 0.09;
+}
+
+.lotus-copy-two {
+    top: 23%; left: 34%; width: clamp(11rem, 13vmin, 17rem);
+    opacity: 0.15;
+}
+
+.lotus-copy-three {
+    top: 9%; left: 66%; width: clamp(6rem, 6.5vmin, 8rem);
+    opacity: 0.15;
+}
+
+.lotus-copy-four {
+    top: 27%; left: 93%; width: clamp(17rem, 20vmin, 26rem);
+    opacity: 0.15;
+}
+
+.lotus-copy-five {
+    top: 47%; left: 18%; width: clamp(16rem, 19vmin, 24rem);
+    opacity: 0.15;
+}
+
+.lotus-copy-six {
+    top: 39%; left: 49%; width: clamp(6rem, 7vmin, 9rem);
+    opacity: 0.15;
+}
+
+.lotus-copy-seven { top: 53%; left: 81%; width: clamp(10rem, 12vmin, 16rem); opacity: 0.15; }
+.lotus-copy-eight { top: 74%; left: 4%; width: clamp(6rem, 6.5vmin, 8rem); opacity: 0.15; }
+.lotus-copy-nine { top: 65%; left: 34%; width: clamp(11rem, 13vmin, 17rem); opacity: 0.15; }
+.lotus-copy-ten { top: 80%; left: 63%; width: clamp(18rem, 21vmin, 27rem); opacity: 0.15; }
+.lotus-copy-eleven { top: 70%; left: 94%; width: clamp(6rem, 7vmin, 9rem); opacity: 0.15; }
+.lotus-copy-twelve { top: 96%; left: 45%; width: clamp(10rem, 12vmin, 16rem); opacity: 0.15; }
+.lotus-copy-thirteen { top: 6%; left: 22%; opacity: 0.15; }
+.lotus-copy-fourteen { top: 15%; left: 51%; opacity: 0.15; }
+.lotus-copy-fifteen { top: 35%; left: 75%; opacity: 0.15; }
+.lotus-copy-sixteen { top: 61%; left: 7%; opacity: 0.15; }
+.lotus-copy-seventeen { top: 58%; left: 56%; opacity: 0.15; }
+.lotus-copy-eighteen { top: 93%; left: 79%; opacity: 0.15; }
+.lotus-copy-nineteen { top: -3%; left: -4%; width: clamp(21rem, 27vmin, 36rem); opacity: 0.055; }
+.lotus-copy-twenty { top: 0; left: 100%; opacity: 0.15; }
+.lotus-copy-twenty-one { top: 100%; left: 0; opacity: 0.15; }
+.lotus-copy-twenty-two { top: 100%; left: 100%; opacity: 0.15; }
+
+/* Consistent responsive hierarchy: seven small, eight medium, seven large. */
+.lotus-small { width: clamp(9rem, 11vmin, 14rem); }
+.lotus-medium { width: clamp(16rem, 19vmin, 25rem); }
+.lotus-large { width: clamp(27rem, 33vmin, 43rem); }
+
+/* Keep the generated artwork atmospheric even at the larger mixed scales. */
+.lotus-copy { opacity: 0.075; }
+.lotus-copy-one { width: clamp(24rem, 30vmin, 40rem); opacity: 0.095; }
+.lotus-copy-nineteen { width: clamp(21rem, 27vmin, 36rem); opacity: 0.055; }
+.lotus-copy-four,
+.lotus-copy-ten,
+.lotus-copy-fifteen,
+.lotus-copy-sixteen,
+.lotus-copy-twenty-two { opacity: 0.06; }
+
+/* Keep the corner duplicates hidden; selected extras are restored on desktop below. */
+.lotus-copy-thirteen,
+.lotus-copy-fourteen,
+.lotus-copy-fifteen,
+.lotus-copy-sixteen,
+.lotus-copy-seventeen,
+.lotus-copy-eighteen,
+.lotus-copy-nineteen,
+.lotus-copy-twenty,
+.lotus-copy-twenty-one,
+.lotus-copy-twenty-two {
+    display: none;
+}
+
+.lotus-copy-two .brand-lotus-image { animation-delay: 0.12s !important; }
+.lotus-copy-three .brand-lotus-image { animation-delay: 0.24s !important; }
+.lotus-copy-four .brand-lotus-image { animation-delay: 0.36s !important; }
+.lotus-copy-five .brand-lotus-image { animation-delay: 0.48s !important; }
+.lotus-copy-six .brand-lotus-image { animation-delay: 0.6s !important; }
+.lotus-copy-seven .brand-lotus-image { animation-delay: 0.72s !important; }
+.lotus-copy-eight .brand-lotus-image { animation-delay: 0.84s !important; }
+.lotus-copy-nine .brand-lotus-image { animation-delay: 0.96s !important; }
+.lotus-copy-ten .brand-lotus-image { animation-delay: 1.08s !important; }
+.lotus-copy-eleven .brand-lotus-image { animation-delay: 1.2s !important; }
+.lotus-copy-twelve .brand-lotus-image { animation-delay: 1.32s !important; }
+.lotus-copy-thirteen .brand-lotus-image { animation-delay: 1.44s !important; }
+.lotus-copy-fourteen .brand-lotus-image { animation-delay: 1.56s !important; }
+.lotus-copy-fifteen .brand-lotus-image { animation-delay: 1.68s !important; }
+.lotus-copy-sixteen .brand-lotus-image { animation-delay: 1.8s !important; }
+.lotus-copy-seventeen .brand-lotus-image { animation-delay: 1.92s !important; }
+.lotus-copy-eighteen .brand-lotus-image { animation-delay: 2.04s !important; }
+.lotus-copy-nineteen .brand-lotus-image { animation-delay: 0.08s !important; }
+.lotus-copy-twenty .brand-lotus-image { animation-delay: 0.2s !important; }
+.lotus-copy-twenty-one .brand-lotus-image { animation-delay: 0.32s !important; }
+.lotus-copy-twenty-two .brand-lotus-image { animation-delay: 0.44s !important; }
+
+@keyframes pattern-lotus-bloom {
+    0% {
+        opacity: 0;
+        transform: scale(0.18) rotate(-8deg);
+        filter: blur(5px) brightness(1.5);
+    }
+    55% { opacity: 0.82; }
+    100% {
+        opacity: 1;
+        transform: scale(var(--pattern-fill)) rotate(0deg);
+        filter: blur(0) brightness(1);
+    }
+}
+
+.smooth-scroll-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .lotus-copy-one { top: 9%; left: -2%; width: 20rem; opacity: 0.08; }
+    .lotus-copy-two { top: 18%; left: 69%; width: 11rem; }
+    .lotus-copy-three { top: 29%; left: 24%; width: 6rem; }
+    .lotus-copy-four { top: 38%; left: 91%; width: 15rem; }
+    .lotus-copy-five { top: 45%; left: 48%; width: 10rem; }
+    .lotus-copy-six { top: 53%; left: 4%; width: 15rem; }
+    .lotus-copy-seven { top: 61%; left: 76%; width: 6rem; }
+    .lotus-copy-eight { top: 70%; left: 31%; width: 10rem; }
+    .lotus-copy-nine { top: 78%; left: 94%; width: 6rem; }
+    .lotus-copy-ten { top: 87%; left: 55%; width: 15rem; }
+    .lotus-copy-eleven { top: 94%; left: 8%; width: 10rem; }
+    .lotus-copy-twelve { display: none; }
+    .lotus-copy-thirteen { top: 5%; left: 48%; }
+    .lotus-copy-fourteen { top: 24%; left: 91%; }
+    .lotus-copy-fifteen { top: 34%; left: 49%; }
+    .lotus-copy-sixteen { top: 68%; left: 5%; }
+    .lotus-copy-seventeen { top: 76%; left: 55%; }
+    .lotus-copy-eighteen { top: 96%; left: 85%; }
+    .lotus-copy-nineteen { display: none; }
+    .lotus-copy-twenty { top: 0; left: 100%; width: 10rem; }
+    .lotus-copy-twenty-one { top: 100%; left: 0; width: 10rem; }
+    .lotus-copy-twenty-two { top: 100%; left: 100%; width: 12rem; }
+
+    .lotus-small { width: 8rem; }
+    .lotus-medium { width: 13rem; }
+    .lotus-large { width: 20rem; }
+}
+
+/* Consistent requested visibility across desktop and mobile. */
+.lotus-copy {
+    opacity: 0.165;
+}
+
+@media (min-width: 769px) {
+    .lotus-copy-thirteen,
+    .lotus-copy-fourteen,
+    .lotus-copy-fifteen,
+    .lotus-copy-sixteen,
+    .lotus-copy-seventeen,
+    .lotus-copy-eighteen {
+        display: block;
+        opacity: 0.165;
+    }
+
+    .lotus-copy-thirteen { top: 6%; left: 43%; width: clamp(6rem, 7vmin, 9rem); }
+    .lotus-copy-fourteen { top: 34%; left: 69%; width: clamp(6rem, 7vmin, 9rem); }
+    .lotus-copy-fifteen { top: 58%; left: 59%; width: clamp(7rem, 8vmin, 10rem); }
+    .lotus-copy-sixteen { top: 91%; left: 18%; width: clamp(9rem, 11vmin, 14rem); }
+    .lotus-copy-seventeen { top: 91%; left: 87%; width: clamp(8rem, 10vmin, 13rem); }
+    .lotus-copy-eighteen { top: 45%; left: 65%; width: clamp(5rem, 6vmin, 8rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lotus-background {
+        opacity: 1;
+    }
+
+    .lotus-background::after { display: none; }
+    .ambient-mark { transform: translate(-50%, -50%); }
+    .interactive-stars { transform: none; }
+    .falling-star { display: none; }
+    .brand-lotus-image { opacity: 1; transform: none; animation: none !important; }
 }
 
 /* Preloader */
@@ -214,11 +501,8 @@ a {
     height: 100%;
     pointer-events: none;
     z-index: 1;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 80px 80px;
-    opacity: 0.5;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 24%);
+    opacity: 1;
 }
 
 /* Global Glowing Effect */
@@ -409,23 +693,24 @@ a {
 }
 
 .hero-container {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     position: relative;
     z-index: 10;
+    min-height: calc(100vh - 160px);
 }
 
 @media (max-width: 992px) {
     .hero-container {
-        grid-template-columns: 1fr;
+        align-items: center;
         text-align: center;
-        justify-content: center;
     }
 }
 
 .hero-content {
-    max-width: 700px;
+    max-width: 860px;
 }
 
 @media (max-width: 992px) {
@@ -541,43 +826,6 @@ a {
 .btn-secondary:hover {
     border-color: var(--text-primary);
     background-color: rgba(255, 255, 255, 0.03);
-}
-
-/* Background Drawing SVG */
-.hero-motif-container {
-    position: absolute;
-    right: -5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 600px;
-    height: 600px;
-    z-index: 2;
-    opacity: 0.85;
-}
-
-#hero-svg {
-    width: 100%;
-    height: 100%;
-    stroke: var(--text-muted);
-    stroke-width: 1.25;
-    transition: stroke var(--transition-smooth);
-}
-
-#hero-svg.glow {
-    stroke: var(--text-primary);
-    filter: drop-shadow(0 0 12px var(--accent-glow-strong));
-}
-
-@media (max-width: 992px) {
-    .hero-motif-container {
-        position: relative;
-        top: auto;
-        right: auto;
-        transform: none;
-        width: 320px;
-        height: 320px;
-        margin: 4rem auto 0;
-    }
 }
 
 /* Scroll indicator mouse */

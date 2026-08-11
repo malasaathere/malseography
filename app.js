@@ -51,6 +51,139 @@ function initApp() {
         });
     });
 
+    // --- 2.1 INTERACTIVE AMBIENT ACCENT ---
+    (function initInteractiveLotus() {
+        const lotus = document.getElementById('lotus-background');
+        const starfield = document.getElementById('interactive-stars');
+        if (!lotus || !starfield) return;
+
+        starfield.innerHTML = Array.from({ length: 62 }, (_, index) => {
+            const left = (index * 37 + 11) % 97;
+            const top = (index * 61 + 7) % 94;
+            const size = 1 + (index % 3) * 0.55;
+            const alpha = 0.16 + (index % 5) * 0.045;
+            return `<span class="interactive-star" style="left:${left}%;top:${top}%;--star-size:${size}px;--star-alpha:${alpha}"></span>`;
+        }).join('');
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        let fallingStarTimer = 0;
+
+        function createFallingStar() {
+            if (document.hidden || starfield.querySelectorAll('.falling-star').length >= 3) return;
+
+            const star = document.createElement('span');
+            star.className = 'falling-star';
+            const startLeft = 8 + Math.random() * 78;
+            const startTop = 4 + Math.random() * 56;
+            const travelX = 120 + Math.random() * 260;
+            const travelY = 90 + Math.random() * 210;
+            const duration = 1.6 + Math.random() * 1.4;
+            const angle = Math.atan2(travelY, travelX) * 180 / Math.PI;
+
+            star.style.setProperty('--fall-left', `${startLeft.toFixed(1)}%`);
+            star.style.setProperty('--fall-top', `${startTop.toFixed(1)}%`);
+            star.style.setProperty('--fall-x', `${travelX.toFixed(0)}px`);
+            star.style.setProperty('--fall-y', `${travelY.toFixed(0)}px`);
+            star.style.setProperty('--fall-duration', `${duration.toFixed(2)}s`);
+            star.style.setProperty('--tail-length', `${(35 + Math.random() * 55).toFixed(0)}px`);
+            star.style.setProperty('--tail-angle', `${angle.toFixed(1)}deg`);
+            starfield.appendChild(star);
+            star.addEventListener('animationend', () => star.remove(), { once: true });
+        }
+
+        function scheduleFallingStar() {
+            window.clearTimeout(fallingStarTimer);
+            fallingStarTimer = window.setTimeout(() => {
+                const burstCount = Math.random() < 0.5 ? 2 : 3;
+                for (let index = 0; index < burstCount; index++) {
+                    window.setTimeout(createFallingStar, index * (140 + Math.random() * 140));
+                }
+                scheduleFallingStar();
+            }, 3500 + Math.random() * 5500);
+        }
+
+        scheduleFallingStar();
+        window.addEventListener('pagehide', () => window.clearTimeout(fallingStarTimer), { once: true });
+
+        let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+        let targetRotate = 0, currentRotate = 0;
+        let targetScale = 1.04, currentScale = 1.04;
+        let targetLight = 1, currentLight = 1;
+        let initialPinchDistance = 0, initialPinchScale = 1.04;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+        const touchDistance = touches => Math.hypot(
+            touches[0].clientX - touches[1].clientX,
+            touches[0].clientY - touches[1].clientY
+        );
+
+        window.addEventListener('pointermove', event => {
+            if (event.pointerType === 'touch') return;
+            const nx = event.clientX / window.innerWidth - 0.5;
+            const ny = event.clientY / window.innerHeight - 0.5;
+            targetX = nx * -28;
+            targetY = ny * -18;
+            targetRotate = nx * 0.22;
+        }, { passive: true });
+
+        window.addEventListener('pointerleave', () => {
+            targetX = 0;
+            targetY = 0;
+            targetRotate = 0;
+            targetScale = 1.04;
+            targetLight = 1;
+        }, { passive: true });
+
+        window.addEventListener('touchstart', event => {
+            if (event.touches.length === 2) {
+                initialPinchDistance = touchDistance(event.touches);
+                initialPinchScale = targetScale;
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', event => {
+            if (event.touches.length === 1) {
+                const touch = event.touches[0];
+                const nx = touch.clientX / window.innerWidth - 0.5;
+                const ny = touch.clientY / window.innerHeight - 0.5;
+                targetX = clamp(nx * -30, -18, 18);
+                targetY = clamp(ny * -22, -13, 13);
+                targetRotate = nx * 0.28;
+            } else if (event.touches.length === 2 && initialPinchDistance) {
+                const pinchRatio = touchDistance(event.touches) / initialPinchDistance;
+                targetScale = clamp(initialPinchScale * pinchRatio, 1.01, 1.12);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', event => {
+            if (event.touches.length < 2) initialPinchDistance = 0;
+            if (event.touches.length === 0) {
+                targetX = 0;
+                targetY = 0;
+                targetRotate = 0;
+                targetScale = 1.04;
+                targetLight = 1;
+            }
+        }, { passive: true });
+
+        window.setTimeout(() => lotus.classList.add('is-bloomed'), 260);
+
+        function animateLotus() {
+            currentX += (targetX - currentX) * 0.055;
+            currentY += (targetY - currentY) * 0.055;
+            currentRotate += (targetRotate - currentRotate) * 0.05;
+            currentScale += (targetScale - currentScale) * 0.06;
+            currentLight += (targetLight - currentLight) * 0.05;
+            starfield.style.setProperty('--star-x', `${currentX.toFixed(2)}px`);
+            starfield.style.setProperty('--star-y', `${currentY.toFixed(2)}px`);
+            starfield.style.setProperty('--star-rotate', `${currentRotate.toFixed(3)}deg`);
+            requestAnimationFrame(animateLotus);
+        }
+
+        requestAnimationFrame(animateLotus);
+    }());
+
     // --- 2.5 ABOUT LENSES ---
     const lensesContainer = document.getElementById("about-lenses-container");
     if (lensesContainer && PORTFOLIO_DATA.about && PORTFOLIO_DATA.about.lenses) {
@@ -209,40 +342,7 @@ function initApp() {
         if (window.lucide) window.lucide.createIcons();
     }
 
-    // --- 7. HERO SVG ---
-    const heroSvg = document.getElementById("hero-svg");
-    if (heroSvg) {
-        const paths = [
-            { d: "M400,400 m-25,0 a25,25 0 1,0 50,0 a25,25 0 1,0 -50,0", class: "center-core" },
-            { d: "M400,400 m-80,0 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0", class: "ring-inner" },
-            { d: "M400,400 m-120,0 a120,120 0 1,0 240,0 a120,120 0 1,0 -240,0", class: "ring-outer" },
-            { d: "M400,320 C420,350 420,380 400,400 C380,380 380,350 400,320 Z", class: "petal" },
-            { d: "M400,480 C420,450 420,420 400,400 C380,420 380,450 400,480 Z", class: "petal" },
-            { d: "M480,400 C450,420 420,420 400,400 C420,380 450,380 480,400 Z", class: "petal" },
-            { d: "M320,400 C350,420 380,420 400,400 C380,380 350,380 320,400 Z", class: "petal" },
-            { d: "M456,344 C460,375 440,390 400,400 C410,360 425,340 456,344 Z", class: "petal" },
-            { d: "M344,456 C340,425 360,410 400,400 C390,440 375,460 344,456 Z", class: "petal" },
-            { d: "M456,456 C425,460 410,440 400,400 C440,410 460,425 456,456 Z", class: "petal" },
-            { d: "M344,344 C375,340 390,410 400,400 C360,390 340,375 344,344 Z", class: "petal" },
-            { d: "M400,280 C480,260 520,180 500,120 C480,60 400,60 380,120 C360,180 420,220 450,220 C470,220 490,190 480,160 C470,130 440,140 430,160", class: "vine" },
-            { d: "M400,520 C320,540 280,620 300,680 C320,740 400,740 420,680 C440,620 380,580 350,580 C330,580 310,610 320,640 C330,670 360,660 370,640", class: "vine" },
-            { d: "M520,400 C540,480 620,520 680,500 C740,480 740,400 680,380 C620,360 580,420 580,450 C580,470 610,490 640,480 C670,470 660,440 640,430", class: "vine" },
-            { d: "M280,400 C260,320 180,280 120,300 C60,320 60,400 120,420 C180,440 220,380 220,350 C220,330 190,310 160,320 C130,330 140,360 160,370", class: "vine" },
-            { d: "M400,40 L400,10", class: "accent-burst" }, { d: "M400,760 L400,790", class: "accent-burst" },
-            { d: "M40,400 L10,400", class: "accent-burst" }, { d: "M760,400 L790,400", class: "accent-burst" }
-        ];
-        heroSvg.innerHTML = paths.map(p => `<path d="${p.d}" class="${p.class}"/>`).join('');
-        const sp = heroSvg.querySelectorAll("path");
-        sp.forEach(p => { const l = p.getTotalLength(); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
-        gsap.to(sp, {
-            strokeDashoffset: 0, duration: 2, stagger: 0.05, ease: "power1.inOut",
-            scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom 30%", scrub: 1.2 }
-        });
-        ScrollTrigger.create({
-            trigger: "#hero", start: "top -5%",
-            onEnter: () => heroSvg.classList.add("glow"), onLeaveBack: () => heroSvg.classList.remove("glow")
-        });
-    }
+    // --- 7. (Hero motif is now integrated into full-site blooming background) ---
 
     // --- 8. COPY EMAIL ---
     const emailBox = document.getElementById("email-click-box"), emailAddr = document.getElementById("email-addr"), copyStatus = document.getElementById("copy-status");
@@ -299,68 +399,400 @@ function initApp() {
 
 
     // ═══════════════════════════════════════════════════════════════════════════
-    //  12. IMAGE-BASED BOTANICAL BACKGROUND (SILVER/WHITE)
+    //  12. FULL-SITE BLOOMING LOTUS & LIYAWELA PATTERN ENGINE (SILVER / WHITE)
     //
-    //  Loads assets/images/background.png directly, desaturates and grades it
-    //  to a silver-white color profile, and applies a multi-pass spotlight
-    //  glow effect tracking the eased cursor.
+    //  Procedurally generates and animates traditional Sri Lankan Lotus & Liyawela
+    //  blooming patterns across the entire website background. Includes scroll
+    //  parallax, dynamic petal unfurling, cursor spotlight awakening, and
+    //  interactive sprouting floret trails.
     // ═══════════════════════════════════════════════════════════════════════════
-    (function initBackground() {
+    (function initBloomingBackground() {
 
         const canvas = document.getElementById('canvas-bg');
         if (!canvas) return;
+        if (window.getComputedStyle(canvas).display === 'none') return;
         const ctx = canvas.getContext('2d');
 
-        // ── Config ─────────────────────────────────────────────────────────────
-        const SPOTLIGHT_R = 360;       // px — cursor spotlight radius
-        const BASE_ALPHA = 0.015;      // Ambient pattern brightness (0.015 = nearly invisible at rest)
-        const EASE_SPEED = 0.06;      // Cursor lag (lower = smoother cinematic drag)
-        // ──────────────────────────────────────────────────────────────────────
+        const useRefinedAmbient = false;
+        if (useRefinedAmbient) {
+        // Refined ambient background: a calm, non-repeating light field that
+        // supports the content instead of competing with it.
+        (function setupAmbientField() {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let width = 0;
+            let height = 0;
+            let pixelRatio = 1;
+            let pointerX = 0;
+            let pointerY = 0;
+            let softX = 0;
+            let softY = 0;
+            let frameId = 0;
+
+            const lights = Array.from({ length: 22 }, (_, index) => ({
+                x: ((index * 47) % 101) / 100,
+                y: ((index * 71 + 13) % 103) / 102,
+                radius: 0.45 + ((index * 19) % 55) / 100,
+                alpha: 0.05 + ((index * 11) % 12) / 100,
+                drift: 0.00005 + ((index * 7) % 8) / 100000,
+                phase: index * 0.83
+            }));
+
+            function fitCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * pixelRatio);
+                canvas.height = Math.round(height * pixelRatio);
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+                if (!pointerX && !pointerY) {
+                    pointerX = softX = width * 0.72;
+                    pointerY = softY = height * 0.28;
+                }
+            }
+
+            function paint(time = 0) {
+                const seconds = time * 0.001;
+                softX += (pointerX - softX) * 0.025;
+                softY += (pointerY - softY) * 0.025;
+
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = '#030303';
+                ctx.fillRect(0, 0, width, height);
+
+                const topGlow = ctx.createRadialGradient(
+                    width * 0.78, height * 0.12, 0,
+                    width * 0.78, height * 0.12, Math.max(width, height) * 0.72
+                );
+                topGlow.addColorStop(0, 'rgba(255,255,255,0.075)');
+                topGlow.addColorStop(0.38, 'rgba(160,166,176,0.025)');
+                topGlow.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = topGlow;
+                ctx.fillRect(0, 0, width, height);
+
+                const pointerGlow = ctx.createRadialGradient(
+                    softX, softY, 0, softX, softY, Math.min(width, height) * 0.42
+                );
+                pointerGlow.addColorStop(0, 'rgba(255,255,255,0.035)');
+                pointerGlow.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.fillStyle = pointerGlow;
+                ctx.fillRect(0, 0, width, height);
+
+                lights.forEach((light) => {
+                    const driftX = reduceMotion ? 0 : Math.sin(seconds * 0.12 + light.phase) * 16;
+                    const driftY = reduceMotion ? 0 : Math.cos(seconds * 0.09 + light.phase) * 12;
+                    const shimmer = reduceMotion ? 0.7 : 0.55 + Math.sin(seconds * 0.35 + light.phase) * 0.2;
+                    ctx.beginPath();
+                    ctx.arc(light.x * width + driftX, light.y * height + driftY, light.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${light.alpha * shimmer})`;
+                    ctx.fill();
+                });
+
+                const vignette = ctx.createRadialGradient(
+                    width * 0.5, height * 0.45, Math.min(width, height) * 0.12,
+                    width * 0.5, height * 0.45, Math.max(width, height) * 0.72
+                );
+                vignette.addColorStop(0, 'rgba(0,0,0,0)');
+                vignette.addColorStop(0.7, 'rgba(0,0,0,0.18)');
+                vignette.addColorStop(1, 'rgba(0,0,0,0.72)');
+                ctx.fillStyle = vignette;
+                ctx.fillRect(0, 0, width, height);
+
+                if (!reduceMotion) frameId = requestAnimationFrame(paint);
+            }
+
+            window.addEventListener('resize', fitCanvas, { passive: true });
+            window.addEventListener('pointermove', (event) => {
+                pointerX = event.clientX;
+                pointerY = event.clientY;
+            }, { passive: true });
+
+            fitCanvas();
+            paint();
+
+            window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true });
+        }());
+
+        return;
+        }
 
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         let W = 0, H = 0, dpr = 1;
         let mouseX = -9999, mouseY = -9999;
         let easedMX = null, easedMY = null;
-        let patternReady = false;
+        let scrollY = 0;
+        let lastSpawnTime = 0;
 
-        const patCanvas = document.createElement('canvas');
-        const patCtx = patCanvas.getContext('2d');
-        const bufCanvas = document.createElement('canvas');
-        const bufCtx = bufCanvas.getContext('2d');
+        // Interactive sprouting micro-blooms
+        const spawnedBlooms = [];
+        // Floating ambient starlight spores
+        const spores = [];
 
-        // Load background image
-        const bgImg = new Image();
-        bgImg.onload = () => {
-            patternReady = true;
-            resize();
-        };
-        bgImg.src = 'assets/images/background.png';
+        // ── Major Section Bloom Anchors across the entire site ──────────────────
+        const majorBlooms = [
+            // Hero Top-Right Primary Lotus (Where the old hero motif was, now part of the living cosmos)
+            { relX: 0.78, relY: 0.32, radius: 340, rot: 0, rotSpeed: 0.0006, scrollSpeed: 0.08, baseBloom: 0.95, phase: 0.0, currentBloom: 0.95 },
+            // Hero Top-Left Ambient Motif
+            { relX: 0.12, relY: 0.18, radius: 210, rot: 0.8, rotSpeed: -0.0005, scrollSpeed: 0.12, baseBloom: 0.85, phase: 1.2, currentBloom: 0.85 },
+            // Story / About Section Bloom
+            { relX: 0.16, relY: 0.52, radius: 290, rot: 1.5, rotSpeed: 0.0005, scrollSpeed: 0.15, baseBloom: 0.88, phase: 2.1, currentBloom: 0.88 },
+            // Expertise / Skills Section Bloom
+            { relX: 0.84, relY: 0.68, radius: 260, rot: 2.2, rotSpeed: -0.0007, scrollSpeed: 0.18, baseBloom: 0.85, phase: 3.4, currentBloom: 0.85 },
+            // Timeline / Experience Ambient Bloom
+            { relX: 0.50, relY: 0.85, radius: 320, rot: 0.4, rotSpeed: 0.0004, scrollSpeed: 0.22, baseBloom: 0.90, phase: 4.5, currentBloom: 0.90 },
+            // Projects Section Bloom
+            { relX: 0.14, relY: 0.38, radius: 270, rot: 2.8, rotSpeed: 0.0006, scrollSpeed: 0.25, baseBloom: 0.88, phase: 5.2, currentBloom: 0.88 },
+            // Code & Contact Section Bloom
+            { relX: 0.82, relY: 0.76, radius: 300, rot: 1.1, rotSpeed: -0.0005, scrollSpeed: 0.28, baseBloom: 0.92, phase: 6.0, currentBloom: 0.92 }
+        ];
 
-        function buildPattern() {
-            if (!patternReady) return;
-
-            patCanvas.width = W;
-            patCanvas.height = H;
-            patCtx.clearRect(0, 0, W, H);
-
-            // Cover-fit: scale image to fill canvas like CSS background-size: cover
-            const imgW = bgImg.naturalWidth;
-            const imgH = bgImg.naturalHeight;
-            const scale = Math.max(W / imgW, H / imgH);
-            const drawW = imgW * scale;
-            const drawH = imgH * scale;
-            const drawX = (W - drawW) / 2;
-            const drawY = (H - drawH) / 2;
-
-            // Draw image to patCanvas with grayscale + silver/white color grading
-            patCtx.save();
-            patCtx.filter = 'grayscale(100%) brightness(1.3) contrast(1.6)';
-            patCtx.drawImage(bgImg, drawX, drawY, drawW, drawH);
-            patCtx.restore();
+        // Initialize 36 ambient floating spores
+        for (let i = 0; i < 36; i++) {
+            spores.push({
+                x: Math.random(),
+                y: Math.random(),
+                size: Math.random() * 1.6 + 0.8,
+                speedX: (Math.random() - 0.5) * 0.0003,
+                speedY: (Math.random() - 0.5) * 0.0003,
+                phase: Math.random() * Math.PI * 2,
+                baseAlpha: Math.random() * 0.35 + 0.15
+            });
         }
 
-        // ── Resize ────────────────────────────────────────────────────────────
+        // ── Parametric Lotus / Liyawela Bloom Vector Renderer ──────────────────
+        function drawBloomMotif(ctx, cx, cy, radius, progress, rotation, baseAlpha, glowMult = 0) {
+            if (progress <= 0.01 || baseAlpha <= 0.003) return;
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(rotation);
+
+            const r = radius;
+            const p = Math.min(1, Math.max(0, progress));
+            const alpha = Math.min(1, baseAlpha * (0.35 + 0.65 * p));
+
+            // Soft radial silver glow aura behind active / hovered blooms
+            if (glowMult > 0.03) {
+                const glowR = r * (0.75 + 0.45 * p);
+                const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, glowR);
+                grad.addColorStop(0.0, `rgba(255, 255, 255, ${0.14 * glowMult})`);
+                grad.addColorStop(0.35, `rgba(255, 255, 255, ${0.06 * glowMult})`);
+                grad.addColorStop(0.75, `rgba(255, 255, 255, ${0.015 * glowMult})`);
+                grad.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(0, 0, glowR, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.035})`;
+            ctx.lineWidth = Math.max(0.75, 1.25 * (r / 220));
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // 1. Center Core Seed Ring
+            const coreR = r * 0.0625 * Math.min(1, p * 3);
+            if (coreR > 0.4) {
+                ctx.beginPath();
+                ctx.arc(0, 0, coreR, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.fill();
+
+                // Core starlight center pip
+                ctx.beginPath();
+                ctx.arc(0, 0, coreR * 0.4, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
+                ctx.fill();
+            }
+
+            // 2. Inner Mandala Ring
+            if (p > 0.08) {
+                const pRing1 = Math.min(1, (p - 0.08) / 0.28);
+                const r1 = r * 0.20 * pRing1;
+                ctx.beginPath();
+                ctx.arc(0, 0, r1, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // 3. Middle Ring with 16 Sacred Geometry Notches
+            if (p > 0.18) {
+                const pRing2 = Math.min(1, (p - 0.18) / 0.3);
+                const r2 = r * 0.30 * pRing2;
+                ctx.beginPath();
+                ctx.arc(0, 0, r2, 0, Math.PI * 2);
+                ctx.stroke();
+
+                if (p > 0.32) {
+                    const dotAlpha = alpha * Math.min(1, (p - 0.32) / 0.25);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${dotAlpha})`;
+                    for (let i = 0; i < 16; i++) {
+                        const ang = (i * Math.PI * 2) / 16;
+                        ctx.beginPath();
+                        ctx.arc(Math.cos(ang) * r2, Math.sin(ang) * r2, Math.max(0.8, 1.2 * (r / 250)), 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            // 4. Primary Lotus Petals (8 symmetrical unfolding petals)
+            if (p > 0.14) {
+                const pPetal1 = Math.min(1, (p - 0.14) / 0.45);
+                const petalTip = r * 0.33 * pPetal1;
+                const petalWidth = r * 0.085 * pPetal1;
+
+                for (let i = 0; i < 8; i++) {
+                    const ang = (i * Math.PI * 2) / 8;
+                    ctx.save();
+                    ctx.rotate(ang);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, -coreR);
+                    ctx.bezierCurveTo(petalWidth * 1.25, -petalTip * 0.38, petalWidth * 0.95, -petalTip * 0.82, 0, -petalTip);
+                    ctx.bezierCurveTo(-petalWidth * 0.95, -petalTip * 0.82, -petalWidth * 1.25, -petalTip * 0.38, 0, -coreR);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.03})`;
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Central petal rib / spine
+                    if (pPetal1 > 0.4) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, -coreR * 1.3);
+                        ctx.lineTo(0, -petalTip * 0.85);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.45})`;
+                        ctx.stroke();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            // 5. Secondary Outer Lotus Petals (Offset by 22.5 deg)
+            if (p > 0.28) {
+                const pPetal2 = Math.min(1, (p - 0.28) / 0.46);
+                const outerTip = r * 0.49 * pPetal2;
+                const outerW = r * 0.125 * pPetal2;
+                const baseR = r * 0.20;
+
+                for (let i = 0; i < 8; i++) {
+                    const ang = (i * Math.PI * 2) / 8 + Math.PI / 8;
+                    ctx.save();
+                    ctx.rotate(ang);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, -baseR);
+                    ctx.bezierCurveTo(outerW * 1.45, -baseR - outerTip * 0.28, outerW * 0.85, -outerTip * 0.86, 0, -outerTip);
+                    ctx.bezierCurveTo(-outerW * 0.85, -outerTip * 0.86, -outerW * 1.45, -baseR - outerTip * 0.28, 0, -baseR);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.025})`;
+                    ctx.fill();
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.85})`;
+                    ctx.stroke();
+
+                    // Side curl lobes on outer petals
+                    if (pPetal2 > 0.5) {
+                        ctx.beginPath();
+                        ctx.moveTo(outerW * 0.55, -baseR - outerTip * 0.35);
+                        ctx.quadraticCurveTo(outerW * 1.15, -baseR - outerTip * 0.48, outerW * 0.35, -outerTip * 0.72);
+                        ctx.moveTo(-outerW * 0.55, -baseR - outerTip * 0.35);
+                        ctx.quadraticCurveTo(-outerW * 1.15, -baseR - outerTip * 0.48, -outerW * 0.35, -outerTip * 0.72);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.35})`;
+                        ctx.stroke();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            // 6. Traditional Sri Lankan Liyawela Spiraling Vines (4 Quadrants)
+            if (p > 0.42) {
+                const pVine = Math.min(1, (p - 0.42) / 0.58);
+
+                for (let i = 0; i < 4; i++) {
+                    const ang = (i * Math.PI * 2) / 4;
+                    ctx.save();
+                    ctx.rotate(ang);
+
+                    const y0 = -r * 0.30;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y0);
+
+                    const cp1x = r * 0.20 * pVine, cp1y = (-r * 0.35) * pVine + y0 * (1 - pVine);
+                    const cp2x = r * 0.30 * pVine, cp2y = -r * 0.55 * pVine;
+                    const p1x = r * 0.25 * pVine,  p1y = -r * 0.70 * pVine;
+                    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p1x, p1y);
+
+                    if (pVine > 0.35) {
+                        const cp3x = r * 0.20 * pVine,  cp3y = -r * 0.85 * pVine;
+                        const cp4x = 0,                cp4y = -r * 0.85 * pVine;
+                        const p2x = -r * 0.05 * pVine, p2y = -r * 0.70 * pVine;
+                        ctx.bezierCurveTo(cp3x, cp3y, cp4x, cp4y, p2x, p2y);
+
+                        if (pVine > 0.65) {
+                            const cp5x = -r * 0.10 * pVine, cp5y = -r * 0.55 * pVine;
+                            const cp6x = r * 0.05 * pVine,  cp6y = -r * 0.45 * pVine;
+                            const p3x = r * 0.125 * pVine,  p3y = -r * 0.45 * pVine;
+                            ctx.bezierCurveTo(cp5x, cp5y, cp6x, cp6y, p3x, p3y);
+
+                            const cp7x = r * 0.175 * pVine, cp7y = -r * 0.45 * pVine;
+                            const cp8x = r * 0.225 * pVine, cp8y = -r * 0.525 * pVine;
+                            const p4x = r * 0.20 * pVine,   p4y = -r * 0.60 * pVine;
+                            ctx.bezierCurveTo(cp7x, cp7y, cp8x, cp8y, p4x, p4y);
+                        }
+                    }
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
+                    ctx.stroke();
+
+                    // Decorative vine sprout leaves
+                    if (pVine > 0.55) {
+                        const leafAlpha = alpha * Math.min(1, (pVine - 0.55) / 0.45);
+                        ctx.beginPath();
+                        ctx.moveTo(r * 0.14 * pVine, -r * 0.44 * pVine);
+                        ctx.quadraticCurveTo(r * 0.27 * pVine, -r * 0.41 * pVine, r * 0.24 * pVine, -r * 0.51 * pVine);
+                        ctx.quadraticCurveTo(r * 0.17 * pVine, -r * 0.49 * pVine, r * 0.14 * pVine, -r * 0.44 * pVine);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${leafAlpha * 0.04})`;
+                        ctx.fill();
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${leafAlpha * 0.75})`;
+                        ctx.stroke();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            // 7. Celestial Accent Bursts & Star Rays
+            if (p > 0.68) {
+                const pBurst = Math.min(1, (p - 0.68) / 0.32);
+                const burstLen = r * 0.09 * pBurst;
+                const bAlpha = alpha * pBurst;
+
+                for (let i = 0; i < 8; i++) {
+                    const ang = (i * Math.PI * 2) / 8;
+                    const startR = r * (0.86 + 0.05 * (i % 2));
+                    ctx.save();
+                    ctx.rotate(ang);
+                    ctx.beginPath();
+                    ctx.moveTo(0, -startR);
+                    ctx.lineTo(0, -startR - burstLen);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${bAlpha * 0.8})`;
+                    ctx.stroke();
+
+                    if (pBurst > 0.65) {
+                        ctx.beginPath();
+                        ctx.arc(0, -startR - burstLen - 2, 1.4, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${bAlpha})`;
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            ctx.restore();
+        }
+
+        // ── Resize Canvas ──────────────────────────────────────────────────────
         function resize() {
             dpr = Math.min(window.devicePixelRatio || 1, 2);
             W = window.innerWidth;
@@ -374,14 +806,32 @@ function initApp() {
             } else {
                 ctx.scale(dpr, dpr);
             }
-            bufCanvas.width = W;
-            bufCanvas.height = H;
-            buildPattern();
         }
 
+        window.addEventListener('resize', resize);
+        window.addEventListener('scroll', () => { scrollY = window.scrollY || 0; }, { passive: true });
+
+        // Mouse tracking
         window.addEventListener('mousemove', e => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+
+            // Sprout delicate floret trails on cursor movement
+            const now = performance.now();
+            if (now - lastSpawnTime > 90) {
+                lastSpawnTime = now;
+                if (spawnedBlooms.length < 24) {
+                    spawnedBlooms.push({
+                        x: mouseX,
+                        y: mouseY,
+                        radius: Math.random() * 28 + 22,
+                        rot: Math.random() * Math.PI * 2,
+                        rotSpeed: (Math.random() - 0.5) * 0.015,
+                        birthTime: now,
+                        lifeDuration: 2200
+                    });
+                }
+            }
         }, { passive: true });
 
         window.addEventListener('touchmove', e => {
@@ -391,99 +841,154 @@ function initApp() {
             }
         }, { passive: true });
 
-        window.addEventListener('resize', resize);
+        // Click / Tap shockwave bloom
+        window.addEventListener('click', e => {
+            const now = performance.now();
+            spawnedBlooms.push({
+                x: e.clientX,
+                y: e.clientY,
+                radius: Math.random() * 45 + 75,
+                rot: Math.random() * Math.PI * 2,
+                rotSpeed: (Math.random() - 0.5) * 0.02,
+                birthTime: now,
+                lifeDuration: 3200,
+                isMajor: true
+            });
+        });
 
-        // ── Draw frame ────────────────────────────────────────────────────────
-        function draw() {
-            // Perfect solid black background
+        // ── Main Render Frame Loop ─────────────────────────────────────────────
+        function draw(timestamp) {
+            // Pure rich black canvas
             ctx.clearRect(0, 0, W, H);
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, W, H);
 
-            if (!patternReady) return;
+            const time = timestamp * 0.001;
 
-            if (prefersReduced) {
-                // Dim static fallback
-                ctx.globalAlpha = BASE_ALPHA;
-                ctx.drawImage(patCanvas, 0, 0);
-                ctx.globalAlpha = 1;
-                return;
-            }
+            // Ease cursor coordinates for smooth cinematic spotlight
+            const targetX = mouseX < -1000 ? W / 2 : mouseX;
+            const targetY = mouseY < -1000 ? H / 2 : mouseY;
 
-            // Ease cursor coordinates for ultra-smooth movement
-            let targetX = mouseX < -1000 ? W / 2 : mouseX;
-            let targetY = mouseY < -1000 ? H / 2 : mouseY;
-            
             if (easedMX === null) {
                 easedMX = targetX;
                 easedMY = targetY;
             }
-            
-            easedMX += (targetX - easedMX) * EASE_SPEED;
-            easedMY += (targetY - easedMY) * EASE_SPEED;
+            easedMX += (targetX - easedMX) * 0.08;
+            easedMY += (targetY - easedMY) * 0.08;
 
-            // ── Layer A: Dim ambient background (barely visible at rest) ──────────
-            if (BASE_ALPHA > 0) {
-                ctx.save();
-                ctx.globalAlpha = BASE_ALPHA;
-                ctx.drawImage(patCanvas, 0, 0);
-                ctx.restore();
+            // ── 1. Subtle Background Tapestry Mesh across the whole site ────────
+            const gridSpacingX = 260;
+            const gridSpacingY = 240;
+            const cols = Math.ceil(W / gridSpacingX) + 2;
+            const rows = Math.ceil(H / gridSpacingY) + 2;
+
+            for (let r = -1; r < rows; r++) {
+                for (let c = -1; c < cols; c++) {
+                    const gx = c * gridSpacingX + ((r % 2) * (gridSpacingX / 2));
+                    const gy = r * gridSpacingY - (scrollY * 0.04 % gridSpacingY);
+
+                    const dx = gx - easedMX;
+                    const dy = gy - easedMY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const proximityGlow = Math.max(0, 1 - dist / 320);
+
+                    const baseAlpha = 0.035 + proximityGlow * 0.18;
+                    const floretBloom = 0.65 + 0.35 * Math.sin(time * 0.8 + c * 1.5 + r * 2.0);
+                    const rot = time * 0.05 + c + r;
+
+                    drawBloomMotif(ctx, gx, gy, 48 + proximityGlow * 16, floretBloom, rot, baseAlpha, proximityGlow);
+
+                    // Delicate connecting geometric lines between nearby grid florets
+                    if (c < cols - 1 && proximityGlow > 0.05) {
+                        const nextGx = (c + 1) * gridSpacingX + (((r) % 2) * (gridSpacingX / 2));
+                        ctx.beginPath();
+                        ctx.moveTo(gx, gy);
+                        ctx.lineTo(nextGx, gy);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.02 + proximityGlow * 0.08})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
             }
 
-            // ── Layer B: Spotlight reveal (reveals pattern in silver/white) ──────
-            // Step 1: Draw full pattern to buffer
-            bufCtx.clearRect(0, 0, W, H);
-            bufCtx.drawImage(patCanvas, 0, 0);
+            // ── 2. Floating Ambient Starlight Spores ────────────────────────────
+            for (let i = 0; i < spores.length; i++) {
+                const s = spores[i];
+                if (!prefersReduced) {
+                    s.x = (s.x + s.speedX + 1) % 1;
+                    s.y = (s.y + s.speedY + 1) % 1;
+                }
+                const sx = s.x * W;
+                const sy = (s.y * H - (scrollY * 0.06)) % H;
+                const actualY = sy < 0 ? sy + H : sy;
 
-            // Step 2: Mask buffer to a soft radial spotlight near the eased cursor
-            const mask = bufCtx.createRadialGradient(easedMX, easedMY, 0, easedMX, easedMY, SPOTLIGHT_R);
-            mask.addColorStop(0.00, 'rgba(0,0,0,1.00)');
-            mask.addColorStop(0.25, 'rgba(0,0,0,0.96)');
-            mask.addColorStop(0.55, 'rgba(0,0,0,0.65)');
-            mask.addColorStop(0.80, 'rgba(0,0,0,0.18)');
-            mask.addColorStop(1.00, 'rgba(0,0,0,0.00)');
+                const shimmer = Math.sin(time * 1.5 + s.phase) * 0.5 + 0.5;
+                const sporeAlpha = s.baseAlpha * shimmer;
 
-            bufCtx.globalCompositeOperation = 'destination-in';
-            bufCtx.fillStyle = mask;
-            bufCtx.fillRect(0, 0, W, H);
-            bufCtx.globalCompositeOperation = 'source-over';
+                ctx.beginPath();
+                ctx.arc(sx, actualY, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${sporeAlpha})`;
+                ctx.fill();
+            }
 
-            // Step 3: Draw blurred bloom layer (screen composite for additive glow)
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-            ctx.filter = 'blur(16px) brightness(1.5)';
-            ctx.globalAlpha = 0.55;
-            ctx.drawImage(bufCanvas, 0, 0);
-            ctx.restore();
+            // ── 3. Major Blooming Nodes across Whole Site ───────────────────────
+            for (let i = 0; i < majorBlooms.length; i++) {
+                const b = majorBlooms[i];
+                const bx = b.relX * W;
+                // Vertical position with parallax scroll offset
+                const rawY = b.relY * H - (scrollY * b.scrollSpeed);
+                const by = ((rawY % (H * 2)) + (H * 2)) % (H * 1.2) - (H * 0.1);
 
-            // Step 4: Draw mid-glow layer (for volumetric richness)
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-            ctx.filter = 'blur(4px) brightness(1.2)';
-            ctx.globalAlpha = 0.40;
-            ctx.drawImage(bufCanvas, 0, 0);
-            ctx.restore();
+                if (!prefersReduced) {
+                    b.rot += b.rotSpeed;
+                }
 
-            // Step 5: Draw sharp, crisp pattern details on top
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-            ctx.filter = 'none';
-            ctx.globalAlpha = 0.95;
-            ctx.drawImage(bufCanvas, 0, 0);
-            ctx.restore();
+                // Breathing oscillation
+                const breathe = Math.sin(time * 0.7 + b.phase) * 0.04;
+                const targetBloom = Math.min(1, b.baseBloom + breathe);
+                b.currentBloom += (targetBloom - b.currentBloom) * 0.05;
+
+                // Cursor proximity awakening
+                const distToCursor = Math.hypot(bx - easedMX, by - easedMY);
+                const spotlight = Math.max(0, 1 - distToCursor / 420);
+                const activeAlpha = 0.12 + spotlight * 0.65;
+                const activeGlow = spotlight * 1.5;
+
+                drawBloomMotif(ctx, bx, by, b.radius * (1 + spotlight * 0.08), b.currentBloom, b.rot, activeAlpha, activeGlow);
+            }
+
+            // ── 4. Interactive Sprouting Floret Trail ───────────────────────────
+            const now = performance.now();
+            for (let i = spawnedBlooms.length - 1; i >= 0; i--) {
+                const sb = spawnedBlooms[i];
+                const age = now - sb.birthTime;
+                if (age > sb.lifeDuration) {
+                    spawnedBlooms.splice(i, 1);
+                    continue;
+                }
+
+                const progress = age / sb.lifeDuration;
+                // Unfurl bloom quickly in first 30%, hold, then gently fade
+                const bloomProgress = Math.min(1, progress * 3.2);
+                const fadeAlpha = progress < 0.25 ? progress / 0.25 : (1 - progress) / 0.75;
+                const sbAlpha = (sb.isMajor ? 0.75 : 0.45) * fadeAlpha;
+
+                sb.rot += sb.rotSpeed;
+                drawBloomMotif(ctx, sb.x, sb.y, sb.radius, bloomProgress, sb.rot, sbAlpha, sb.isMajor ? 1.2 : 0.6);
+            }
         }
 
-        function loop() {
-            draw();
+        function loop(timestamp) {
+            draw(timestamp);
             requestAnimationFrame(loop);
         }
 
         // Bootstrap
         resize();
-        loop();
+        requestAnimationFrame(loop);
 
     }());
-    // ─── end botanical background ─────────────────────────────────────────────
+    // ─── end blooming lotus background ────────────────────────────────────────
 }
 
 if (document.readyState === "loading") {
