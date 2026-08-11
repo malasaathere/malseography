@@ -692,6 +692,52 @@ a {
     overflow: hidden;
 }
 
+.hero-portrait {
+    --portrait-opacity: 0.9;
+    position: absolute;
+    right: clamp(-3rem, 1vw, 2rem);
+    bottom: -4%;
+    width: clamp(38rem, 38vw, 60rem);
+    height: calc(100vh - 10rem);
+    max-height: 86rem;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(5rem, 2rem, 0) scale(1.03);
+    animation: hero-portrait-in 1.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, #000 20%, #000 92%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, #000 12%, #000 82%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0%, #000 20%, #000 92%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, #000 12%, #000 82%, transparent 100%);
+    mask-composite: intersect;
+}
+
+.hero-portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 42%);
+}
+
+.hero-portrait img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 52% 43%;
+    filter: grayscale(1) contrast(1.08) brightness(0.86);
+}
+
+@keyframes hero-portrait-in {
+    to {
+        opacity: var(--portrait-opacity);
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
 .hero-container {
     display: flex;
     flex-direction: column;
@@ -706,6 +752,34 @@ a {
     .hero-container {
         align-items: center;
         text-align: center;
+    }
+
+    .hero-portrait {
+        --portrait-opacity: 0.24;
+        right: -10%;
+        bottom: -2%;
+        width: 76%;
+        height: 80%;
+        opacity: 0;
+        filter: brightness(0.65);
+    }
+
+}
+
+@media (max-width: 600px) {
+    .hero-portrait {
+        right: -30%;
+        width: 110%;
+        height: 72%;
+        bottom: -5%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-portrait {
+        animation: none;
+        opacity: var(--portrait-opacity);
+        transform: none;
     }
 }
 
