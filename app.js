@@ -76,10 +76,11 @@ function initApp() {
             star.className = 'falling-star';
             const startLeft = 8 + Math.random() * 78;
             const startTop = 4 + Math.random() * 56;
-            const travelX = 120 + Math.random() * 260;
-            const travelY = 90 + Math.random() * 210;
+            const travelDistance = 140 + Math.random() * 240;
+            const travelX = travelDistance;
+            const travelY = travelDistance;
             const duration = 1.6 + Math.random() * 1.4;
-            const angle = Math.atan2(travelY, travelX) * 180 / Math.PI;
+            const angle = 45;
 
             star.style.setProperty('--fall-left', `${startLeft.toFixed(1)}%`);
             star.style.setProperty('--fall-top', `${startTop.toFixed(1)}%`);
