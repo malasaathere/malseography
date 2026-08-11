@@ -1992,13 +1992,16 @@ section {
 
     .logo-img-wrap,
     .logo-img-wrap .site-logo {
-        width: 3.8rem;
-        height: 3.8rem;
+        width: 3.2rem;
+        height: 3.2rem;
     }
 
     .logo-text {
-        font-size: 1.45rem;
-        letter-spacing: 0.08em;
+        max-width: none;
+        overflow: visible;
+        font-size: 1.15rem;
+        letter-spacing: 0.045em;
+        white-space: nowrap;
     }
 
     .mobile-nav-toggle {
@@ -2379,10 +2382,12 @@ section {
 
 @media (max-width: 430px) {
     .logo-text {
-        max-width: 15.5rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: none;
+        overflow: visible;
+        text-overflow: clip;
         white-space: nowrap;
+        font-size: 1.05rem;
+        letter-spacing: 0.03em;
     }
 
     .hero-actions {
