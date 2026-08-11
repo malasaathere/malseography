@@ -732,6 +732,10 @@ a {
     filter: grayscale(1) contrast(1.08) brightness(0.91);
 }
 
+.contact-mobile-portrait {
+    display: none;
+}
+
 @keyframes hero-portrait-in {
     to {
         opacity: var(--portrait-opacity);
@@ -1964,5 +1968,388 @@ section {
     }
     .repo-card {
         padding: 2.4rem;
+    }
+}
+
+/* --- MOBILE USABILITY PASS: desktop and laptop rules remain unchanged --- */
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 7.2rem;
+    }
+
+    body {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding-inline: max(2rem, env(safe-area-inset-left));
+    }
+
+    .header-container {
+        min-height: 7.2rem;
+        padding: 1.2rem max(2rem, env(safe-area-inset-right));
+    }
+
+    .logo-img-wrap,
+    .logo-img-wrap .site-logo {
+        width: 3.8rem;
+        height: 3.8rem;
+    }
+
+    .logo-text {
+        font-size: 1.45rem;
+        letter-spacing: 0.08em;
+    }
+
+    .mobile-nav-toggle {
+        width: 4.8rem;
+        height: 4.8rem;
+        align-items: center;
+        justify-content: center;
+        padding: 1.2rem;
+        margin-right: -1.2rem;
+        touch-action: manipulation;
+    }
+
+    .mobile-nav-overlay {
+        height: 100dvh;
+        padding: 9rem 2rem max(3rem, env(safe-area-inset-bottom));
+        overflow-y: auto;
+    }
+
+    .mobile-nav-links {
+        width: min(100%, 36rem);
+        gap: 1rem;
+    }
+
+    .mobile-link {
+        width: 100%;
+        min-height: 5.6rem;
+        display: grid;
+        place-items: center;
+        font-size: clamp(2rem, 7vw, 2.8rem);
+        border-bottom: 1px solid var(--border-subtle);
+        touch-action: manipulation;
+    }
+
+    section {
+        padding: 7.2rem 0;
+    }
+
+    .hero-section {
+        min-height: 100svh;
+        padding-top: 7.2rem;
+        align-items: stretch;
+    }
+
+    .hero-container {
+        min-height: calc(100svh - 7.2rem);
+        justify-content: center;
+        padding-top: 3rem;
+        padding-bottom: 8rem;
+    }
+
+    .hero-content {
+        width: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-eyebrow {
+        max-width: 100%;
+        margin-bottom: 1.6rem;
+        font-size: 1.1rem;
+        letter-spacing: 0.18em;
+        line-height: 1.5;
+    }
+
+    .hero-title {
+        margin-bottom: 2.2rem;
+    }
+
+    .brand-name {
+        font-size: clamp(2rem, 8vw, 3rem);
+        overflow-wrap: anywhere;
+    }
+
+    .personal-name {
+        font-size: clamp(3.4rem, 12vw, 5.4rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .hero-subtitle {
+        max-width: 34rem;
+        margin-bottom: 3rem;
+        font-size: 1.55rem;
+        line-height: 1.65;
+        text-wrap: pretty;
+    }
+
+    .hero-actions {
+        width: min(100%, 34rem);
+        margin-inline: auto;
+        gap: 1.2rem;
+    }
+
+    .hero-actions .btn {
+        min-height: 5rem;
+        flex: 1 1 0;
+        justify-content: center;
+        padding: 1.4rem 1.6rem;
+        white-space: nowrap;
+        touch-action: manipulation;
+    }
+
+    .hero-scroll-indicator {
+        bottom: max(1.6rem, env(safe-area-inset-bottom));
+    }
+
+    .indicator-text {
+        display: none;
+    }
+
+    .section-header-center {
+        margin-bottom: 4.8rem;
+    }
+
+    .section-title {
+        font-size: clamp(2.8rem, 9vw, 3.4rem);
+    }
+
+    .section-desc {
+        font-size: 1.55rem;
+        line-height: 1.65;
+    }
+
+    .section-grid {
+        gap: 3.6rem;
+    }
+
+    .skills-grid,
+    .projects-grid,
+    .repos-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.6rem;
+    }
+
+    .skills-grid {
+        margin-bottom: 6rem;
+    }
+
+    .skill-card {
+        padding: 2.6rem 2.2rem;
+    }
+
+    .skill-icon-box {
+        margin-bottom: 2rem;
+    }
+
+    .skill-card-desc {
+        margin-bottom: 2.2rem;
+    }
+
+    .tools-wrapper {
+        padding: 3.2rem 2.2rem;
+    }
+
+    .tools-title {
+        margin-bottom: 3.2rem;
+        line-height: 1.4;
+    }
+
+    .tools-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.4rem;
+    }
+
+    .timeline-item {
+        padding-left: 4.4rem;
+        margin-bottom: 4.8rem;
+    }
+
+    .timeline-line,
+    .timeline-marker {
+        left: 1.2rem;
+    }
+
+    .project-filters {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: 0.8rem;
+        margin-inline: -2rem;
+        margin-bottom: 3.2rem;
+        padding: 0 2rem 0.8rem;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .project-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        min-height: 4.4rem;
+        flex: 0 0 auto;
+        padding: 1rem 1.7rem;
+        touch-action: manipulation;
+    }
+
+    .project-card,
+    .repo-card {
+        min-width: 0;
+    }
+
+    .project-info {
+        padding: 2.2rem;
+    }
+
+    .email-banner {
+        margin-bottom: 5rem;
+    }
+
+    .email-address {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .social-grid {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.2rem;
+    }
+
+    .social-link {
+        min-width: 4.8rem;
+        min-height: 4.8rem;
+    }
+
+    .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-container {
+        max-height: 92dvh;
+        border-radius: 1.2rem 1.2rem 0 0;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .modal-close {
+        top: 1.2rem;
+        right: 1.2rem;
+        width: 4.8rem;
+        height: 4.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.72);
+    }
+
+    .modal-content {
+        padding: 5.6rem 2rem 3rem;
+    }
+
+    .modal-project-title {
+        padding-right: 4rem;
+        font-size: clamp(2.6rem, 9vw, 3.4rem);
+    }
+
+    .modal-image-wrapper,
+    .modal-section-grid {
+        margin-bottom: 3.6rem;
+    }
+
+    /* Keep the brand atmosphere without crowding a narrow viewport. */
+    .lotus-copy-three,
+    .lotus-copy-five,
+    .lotus-copy-seven,
+    .lotus-copy-nine,
+    .lotus-copy-eleven,
+    .lotus-copy-thirteen,
+    .lotus-copy-fourteen,
+    .lotus-copy-fifteen,
+    .lotus-copy-seventeen,
+    .lotus-copy-eighteen,
+    .lotus-copy-twenty,
+    .lotus-copy-twenty-one,
+    .lotus-copy-twenty-two {
+        display: none;
+    }
+
+    .lotus-copy-one { top: 10%; left: -10%; width: 15rem; }
+    .lotus-copy-two { top: 23%; left: 88%; width: 9rem; }
+    .lotus-copy-four { top: 42%; left: 96%; width: 12rem; }
+    .lotus-copy-six { top: 57%; left: -5%; width: 12rem; }
+    .lotus-copy-eight { top: 75%; left: 82%; width: 9rem; }
+    .lotus-copy-ten { top: 92%; left: 12%; width: 12rem; }
+
+    .hero-portrait {
+        display: none;
+    }
+
+    .contact-mobile-portrait {
+        position: relative;
+        display: block;
+        width: clamp(17rem, 54vw, 21rem);
+        aspect-ratio: 1;
+        margin: 5rem auto 0;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        background: #080808;
+        box-shadow:
+            0 0 0 0.7rem rgba(255, 255, 255, 0.025),
+            0 1.8rem 4rem rgba(0, 0, 0, 0.55);
+    }
+
+    .contact-mobile-portrait::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(180deg, transparent 52%, rgba(0, 0, 0, 0.3));
+        pointer-events: none;
+    }
+
+    .contact-mobile-portrait img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: 52% 30%;
+        filter: grayscale(1) contrast(1.08) brightness(1.08);
+    }
+}
+
+@media (max-width: 430px) {
+    .logo-text {
+        max-width: 15.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+        flex-basis: auto;
+    }
+
+    .personal-name {
+        font-size: clamp(3.2rem, 12.5vw, 4.7rem);
+    }
+
+    .contact-title {
+        font-size: 3.2rem;
+    }
+
+    .email-banner {
+        padding: 2.4rem 2rem;
     }
 }

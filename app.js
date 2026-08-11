@@ -40,7 +40,8 @@ function initApp() {
 
     const header = document.querySelector(".main-header");
     window.addEventListener("scroll", () => {
-        header.style.padding = window.scrollY > 50 ? "1.2rem 0" : "2.4rem 0";
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        header.style.padding = isMobile ? "0" : (window.scrollY > 50 ? "1.2rem 0" : "2.4rem 0");
         header.style.backgroundColor = window.scrollY > 50 ? "rgba(0,0,0,0.95)" : "rgba(0,0,0,0.8)";
     });
     document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -57,7 +58,8 @@ function initApp() {
         const starfield = document.getElementById('interactive-stars');
         if (!lotus || !starfield) return;
 
-        starfield.innerHTML = Array.from({ length: 62 }, (_, index) => {
+        const starCount = window.matchMedia('(max-width: 768px)').matches ? 34 : 62;
+        starfield.innerHTML = Array.from({ length: starCount }, (_, index) => {
             const left = (index * 37 + 11) % 97;
             const top = (index * 61 + 7) % 94;
             const size = 1 + (index % 3) * 0.55;
@@ -96,7 +98,9 @@ function initApp() {
         function scheduleFallingStar() {
             window.clearTimeout(fallingStarTimer);
             fallingStarTimer = window.setTimeout(() => {
-                const burstCount = Math.random() < 0.5 ? 2 : 3;
+                const burstCount = window.matchMedia('(max-width: 768px)').matches
+                    ? 2
+                    : (Math.random() < 0.5 ? 2 : 3);
                 for (let index = 0; index < burstCount; index++) {
                     window.setTimeout(createFallingStar, index * (140 + Math.random() * 140));
                 }
