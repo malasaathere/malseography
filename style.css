@@ -695,11 +695,12 @@ a {
 .hero-portrait {
     --portrait-opacity: 0.9;
     position: absolute;
-    right: clamp(-3rem, 1vw, 2rem);
-    bottom: -4%;
-    width: clamp(38rem, 38vw, 60rem);
-    height: calc(100vh - 10rem);
-    max-height: 86rem;
+    right: 8%;
+    top: 18%;
+    bottom: auto;
+    width: 34%;
+    height: 76%;
+    max-height: none;
     z-index: 4;
     pointer-events: none;
     opacity: 0;
@@ -728,7 +729,7 @@ a {
     display: block;
     object-fit: cover;
     object-position: 52% 43%;
-    filter: grayscale(1) contrast(1.08) brightness(0.86);
+    filter: grayscale(1) contrast(1.08) brightness(0.91);
 }
 
 @keyframes hero-portrait-in {
@@ -756,10 +757,11 @@ a {
 
     .hero-portrait {
         --portrait-opacity: 0.24;
-        right: -10%;
-        bottom: -2%;
-        width: 76%;
-        height: 80%;
+        right: -1%;
+        top: 20%;
+        bottom: auto;
+        width: 68%;
+        height: 72%;
         opacity: 0;
         filter: brightness(0.65);
     }
@@ -768,10 +770,11 @@ a {
 
 @media (max-width: 600px) {
     .hero-portrait {
-        right: -30%;
-        width: 110%;
-        height: 72%;
-        bottom: -5%;
+        right: -14%;
+        top: 27%;
+        width: 96%;
+        height: 66%;
+        bottom: auto;
     }
 }
 
