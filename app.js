@@ -54,7 +54,57 @@ function initApp() {
     // --- 2.1 INTERACTIVE AMBIENT ACCENT ---
     (function initInteractiveLotus() {
         const lotus = document.getElementById('lotus-background');
-        if (!lotus || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const starfield = document.getElementById('interactive-stars');
+        if (!lotus || !starfield) return;
+
+        starfield.innerHTML = Array.from({ length: 62 }, (_, index) => {
+            const left = (index * 37 + 11) % 97;
+            const top = (index * 61 + 7) % 94;
+            const size = 1 + (index % 3) * 0.55;
+            const alpha = 0.16 + (index % 5) * 0.045;
+            return `<span class="interactive-star" style="left:${left}%;top:${top}%;--star-size:${size}px;--star-alpha:${alpha}"></span>`;
+        }).join('');
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        let fallingStarTimer = 0;
+
+        function createFallingStar() {
+            if (document.hidden || starfield.querySelectorAll('.falling-star').length >= 3) return;
+
+            const star = document.createElement('span');
+            star.className = 'falling-star';
+            const startLeft = 8 + Math.random() * 78;
+            const startTop = 4 + Math.random() * 56;
+            const travelX = 120 + Math.random() * 260;
+            const travelY = 90 + Math.random() * 210;
+            const duration = 1.6 + Math.random() * 1.4;
+            const angle = Math.atan2(travelY, travelX) * 180 / Math.PI;
+
+            star.style.setProperty('--fall-left', `${startLeft.toFixed(1)}%`);
+            star.style.setProperty('--fall-top', `${startTop.toFixed(1)}%`);
+            star.style.setProperty('--fall-x', `${travelX.toFixed(0)}px`);
+            star.style.setProperty('--fall-y', `${travelY.toFixed(0)}px`);
+            star.style.setProperty('--fall-duration', `${duration.toFixed(2)}s`);
+            star.style.setProperty('--tail-length', `${(35 + Math.random() * 55).toFixed(0)}px`);
+            star.style.setProperty('--tail-angle', `${angle.toFixed(1)}deg`);
+            starfield.appendChild(star);
+            star.addEventListener('animationend', () => star.remove(), { once: true });
+        }
+
+        function scheduleFallingStar() {
+            window.clearTimeout(fallingStarTimer);
+            fallingStarTimer = window.setTimeout(() => {
+                const burstCount = Math.random() < 0.5 ? 2 : 3;
+                for (let index = 0; index < burstCount; index++) {
+                    window.setTimeout(createFallingStar, index * (140 + Math.random() * 140));
+                }
+                scheduleFallingStar();
+            }, 3500 + Math.random() * 5500);
+        }
+
+        scheduleFallingStar();
+        window.addEventListener('pagehide', () => window.clearTimeout(fallingStarTimer), { once: true });
 
         let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
         let targetRotate = 0, currentRotate = 0;
@@ -72,11 +122,9 @@ function initApp() {
             if (event.pointerType === 'touch') return;
             const nx = event.clientX / window.innerWidth - 0.5;
             const ny = event.clientY / window.innerHeight - 0.5;
-            targetX = nx * -48;
-            targetY = ny * -30;
-            targetRotate = nx * 1.15;
-            targetScale = 1.04 + Math.abs(nx) * 0.018;
-            targetLight = 1 + Math.max(0, nx + 0.35) * 0.18;
+            targetX = nx * -28;
+            targetY = ny * -18;
+            targetRotate = nx * 0.22;
         }, { passive: true });
 
         window.addEventListener('pointerleave', () => {
@@ -99,10 +147,9 @@ function initApp() {
                 const touch = event.touches[0];
                 const nx = touch.clientX / window.innerWidth - 0.5;
                 const ny = touch.clientY / window.innerHeight - 0.5;
-                targetX = clamp(nx * -44, -26, 26);
-                targetY = clamp(ny * -32, -19, 19);
-                targetRotate = nx * 1.1;
-                targetLight = 1 + Math.max(0, nx + 0.3) * 0.16;
+                targetX = clamp(nx * -30, -18, 18);
+                targetY = clamp(ny * -22, -13, 13);
+                targetRotate = nx * 0.28;
             } else if (event.touches.length === 2 && initialPinchDistance) {
                 const pinchRatio = touchDistance(event.touches) / initialPinchDistance;
                 targetScale = clamp(initialPinchScale * pinchRatio, 1.01, 1.12);
@@ -128,11 +175,9 @@ function initApp() {
             currentRotate += (targetRotate - currentRotate) * 0.05;
             currentScale += (targetScale - currentScale) * 0.06;
             currentLight += (targetLight - currentLight) * 0.05;
-            lotus.style.setProperty('--lotus-x', `${currentX.toFixed(2)}px`);
-            lotus.style.setProperty('--lotus-y', `${currentY.toFixed(2)}px`);
-            lotus.style.setProperty('--lotus-rotate', `${currentRotate.toFixed(3)}deg`);
-            lotus.style.setProperty('--lotus-scale', currentScale.toFixed(4));
-            lotus.style.setProperty('--lotus-light', currentLight.toFixed(3));
+            starfield.style.setProperty('--star-x', `${currentX.toFixed(2)}px`);
+            starfield.style.setProperty('--star-y', `${currentY.toFixed(2)}px`);
+            starfield.style.setProperty('--star-rotate', `${currentRotate.toFixed(3)}deg`);
             requestAnimationFrame(animateLotus);
         }
 

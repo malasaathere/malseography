@@ -130,11 +130,63 @@ body::before {
 .ambient-mark {
     position: absolute;
     aspect-ratio: 1;
-    transform: translate(-50%, -50%) translate3d(var(--lotus-x), var(--lotus-y), 0)
-               rotate(var(--lotus-rotate)) scale(var(--lotus-scale));
-    filter: brightness(var(--lotus-light));
+    transform: translate(-50%, -50%);
     transform-origin: center;
-    will-change: transform, filter;
+}
+
+.interactive-stars {
+    --star-x: 0px;
+    --star-y: 0px;
+    --star-rotate: 0deg;
+    position: absolute;
+    inset: -4%;
+    transform: translate3d(var(--star-x), var(--star-y), 0) rotate(var(--star-rotate));
+    transform-origin: center;
+    will-change: transform;
+}
+
+.interactive-star {
+    position: absolute;
+    width: var(--star-size, 2px);
+    height: var(--star-size, 2px);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, var(--star-alpha, 0.28));
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.22);
+}
+
+.falling-star {
+    position: absolute;
+    left: var(--fall-left);
+    top: var(--fall-top);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    animation: falling-star-travel var(--fall-duration) cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+
+.falling-star::after {
+    content: '';
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: var(--tail-length);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5));
+    transform: translateY(-50%) rotate(var(--tail-angle));
+    transform-origin: right center;
+}
+
+@keyframes falling-star-travel {
+    0% { opacity: 0; transform: translate3d(0, 0, 0) scale(0.6); }
+    12% { opacity: 0.85; }
+    72% { opacity: 0.72; }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--fall-x), var(--fall-y), 0) scale(0.9);
+    }
 }
 
 .brand-lotus-image {
@@ -216,7 +268,7 @@ body::before {
 .lotus-copy-sixteen,
 .lotus-copy-twenty-two { opacity: 0.06; }
 
-/* Remove the duplicate second layer so every visible flower has breathing room. */
+/* Keep the corner duplicates hidden; selected extras are restored on desktop below. */
 .lotus-copy-thirteen,
 .lotus-copy-fourteen,
 .lotus-copy-fifteen,
@@ -302,7 +354,26 @@ body::before {
 
 /* Consistent requested visibility across desktop and mobile. */
 .lotus-copy {
-    opacity: 0.2;
+    opacity: 0.165;
+}
+
+@media (min-width: 769px) {
+    .lotus-copy-thirteen,
+    .lotus-copy-fourteen,
+    .lotus-copy-fifteen,
+    .lotus-copy-sixteen,
+    .lotus-copy-seventeen,
+    .lotus-copy-eighteen {
+        display: block;
+        opacity: 0.165;
+    }
+
+    .lotus-copy-thirteen { top: 6%; left: 43%; width: clamp(6rem, 7vmin, 9rem); }
+    .lotus-copy-fourteen { top: 34%; left: 69%; width: clamp(6rem, 7vmin, 9rem); }
+    .lotus-copy-fifteen { top: 58%; left: 59%; width: clamp(7rem, 8vmin, 10rem); }
+    .lotus-copy-sixteen { top: 91%; left: 18%; width: clamp(9rem, 11vmin, 14rem); }
+    .lotus-copy-seventeen { top: 91%; left: 87%; width: clamp(8rem, 10vmin, 13rem); }
+    .lotus-copy-eighteen { top: 45%; left: 65%; width: clamp(5rem, 6vmin, 8rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -311,7 +382,9 @@ body::before {
     }
 
     .lotus-background::after { display: none; }
-    .ambient-mark { transform: none; filter: none; }
+    .ambient-mark { transform: translate(-50%, -50%); }
+    .interactive-stars { transform: none; }
+    .falling-star { display: none; }
     .brand-lotus-image { opacity: 1; transform: none; animation: none !important; }
 }
 
