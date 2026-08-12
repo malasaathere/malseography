@@ -101,7 +101,7 @@
                 <a href="#skills" class="nav-link">Expertise</a>
                 <a href="#timeline" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
-                <a href="#repos" class="nav-link">Code</a>
+                    <a href="#repos" class="nav-link">Recent</a>
                 <a href="#contact" class="nav-link nav-btn">Let's Connect</a>
             </nav>
             <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
@@ -118,7 +118,7 @@
             <a href="#skills" class="mobile-link">Expertise</a>
             <a href="#timeline" class="mobile-link">Experience</a>
             <a href="#projects" class="mobile-link">Projects</a>
-            <a href="#repos" class="mobile-link">Code</a>
+            <a href="#repos" class="mobile-link">Recent</a>
             <a href="#contact" class="mobile-link">Contact</a>
         </nav>
     </div>
@@ -194,8 +194,7 @@
             <div class="container">
                 <div class="section-header-center">
                     <h2 class="section-title font-syne text-center">EXPERTISE</h2>
-                    <p class="section-desc text-center">Core creative disciplines, focused competencies, and production
-                        tools.</p>
+                    <p class="section-desc text-center">Where creative instinct meets technical precision.</p>
                 </div>
 
                 <!-- Dynamic Skills Grid (Populated by app.js) -->
@@ -210,7 +209,18 @@
             </div>
         </section>
 
-        <!-- 4. EDUCATIONAL BACKGROUND TIMELINE -->
+        <!-- 4. TECHNICAL INTERESTS -->
+        <section class="interests-section" id="interests">
+            <div class="container">
+                <div class="section-header-center">
+                    <h2 class="section-title font-syne text-center">INTERESTS</h2>
+                    <p class="section-desc text-center">Ideas and technologies I continue to explore.</p>
+                </div>
+                <div class="interests-grid" id="interests-container"></div>
+            </div>
+        </section>
+
+        <!-- 5. EDUCATIONAL BACKGROUND TIMELINE -->
         <section class="timeline-section" id="timeline">
             <div class="container">
                 <div class="section-header-center">
@@ -233,22 +243,11 @@
         <section class="projects-section" id="projects">
             <div class="container">
                 <div class="section-header-center">
-                    <h2 class="section-title font-syne text-center">ALL WORKS</h2>
-                    <p class="section-desc text-center">Case studies exploring visual solutions and structural logic
-                        across diverse creative mediums.</p>
+                    <h2 class="section-title font-syne text-center">SELECTED WORK</h2>
+                    <p class="section-desc text-center">Explore my work through four creative disciplines.</p>
                 </div>
 
-                <!-- Category Filtering Tabs -->
-                <div class="project-filters">
-                    <button class="filter-btn active" data-filter="all">All Works</button>
-                    <button class="filter-btn" data-filter="uiux">UI/UX Design</button>
-                    <button class="filter-btn" data-filter="graphic">Graphic Design</button>
-                    <button class="filter-btn" data-filter="software">Software</button>
-                    <button class="filter-btn" data-filter="video">Video Editing</button>
-                    <button class="filter-btn" data-filter="photography">Photography</button>
-                </div>
-
-                <!-- Dynamic Projects Grid (Populated by app.js) -->
+                <!-- Category-based portfolio links (Populated by app.js) -->
                 <div class="projects-grid" id="projects-container"></div>
             </div>
         </section>
@@ -257,8 +256,8 @@
         <section class="repos-section" id="repos">
             <div class="container">
                 <div class="section-header-center">
-                    <h2 class="section-title font-syne text-center">CODE & REPOSITORIES</h2>
-                    <p class="section-desc text-center">Open-source projects and development work.</p>
+                    <h2 class="section-title font-syne text-center">RECENT PROJECTS &amp; REPOSITORIES</h2>
+                    <p class="section-desc text-center">Recent development work, practical systems, and deployment experience.</p>
                 </div>
 
                 <!-- Dynamic Repos List (Populated by app.js) -->
@@ -288,13 +287,20 @@
                     </div>
 
                     <!-- Copy Email Block -->
-                    <div class="email-banner" id="email-click-box" role="button" tabindex="0" aria-label="Copy email address">
+                    <div class="email-banner" id="email-click-box">
                         <div class="email-details">
-                            <span class="email-label">DIRECT EMAIL</span>
-                            <span class="email-address" id="email-addr">smrajasooriya@gmail.com</span>
+                            <span class="email-label">DIRECT EMAILS</span>
+                            <div class="email-row" role="button" tabindex="0" data-email-copy="email-addr" aria-label="Copy personal email address">
+                                <span class="email-kind">Personal</span>
+                                <span class="email-address" id="email-addr">smrajasooriya@gmail.com</span>
+                            </div>
+                            <div class="email-row" role="button" tabindex="0" data-email-copy="email-addr-secondary" aria-label="Copy creative email address">
+                                <span class="email-kind">Creative</span>
+                                <span class="email-address email-address-secondary" id="email-addr-secondary">malseographydigitalspace@gmail.com</span>
+                            </div>
                         </div>
                         <div class="email-action">
-                            <span class="copy-text" id="copy-status">CLICK TO COPY</span>
+                            <span class="copy-text" id="copy-status">SELECT AN EMAIL</span>
                             <i data-lucide="copy" class="copy-icon"></i>
                         </div>
                     </div>

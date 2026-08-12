@@ -25,6 +25,8 @@ function initApp() {
             // Email copy
             const emailAddr = document.getElementById('email-addr');
             if (emailAddr && PORTFOLIO_DATA.personal && PORTFOLIO_DATA.personal.email) emailAddr.textContent = PORTFOLIO_DATA.personal.email;
+            const secondaryEmailAddr = document.getElementById('email-addr-secondary');
+            if (secondaryEmailAddr && PORTFOLIO_DATA.personal && PORTFOLIO_DATA.personal.secondaryEmail) secondaryEmailAddr.textContent = PORTFOLIO_DATA.personal.secondaryEmail;
         }
     } catch (e) { console.warn('Applying site data failed', e); }
 
@@ -210,6 +212,15 @@ function initApp() {
             <ul class="skill-focus-list">${s.focus.map(f => `<li class="skill-focus-item"><span class="skill-focus-dot"></span><span>${f}</span></li>`).join('')}</ul>
         </div>`).join('');
 
+    const interestsContainer = document.getElementById("interests-container");
+    if (interestsContainer && PORTFOLIO_DATA.interests) interestsContainer.innerHTML = PORTFOLIO_DATA.interests.map(s => `
+        <div class="skill-card interest-card" data-interest-id="${s.id}">
+            <div class="skill-icon-box"><i data-lucide="${s.icon}" style="width:32px;height:32px;"></i></div>
+            <h3 class="skill-card-title font-syne">${s.title}</h3>
+            <p class="skill-card-desc">${s.description}</p>
+            <ul class="skill-focus-list">${s.focus.map(f => `<li class="skill-focus-item"><span class="skill-focus-dot"></span><span>${f}</span></li>`).join('')}</ul>
+        </div>`).join('');
+
     // --- 4. TOOLS ---
     const CUSTOM_TOOL_ICONS = {
         "figma": `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;color:var(--text-muted);"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg>`,
@@ -276,35 +287,25 @@ function initApp() {
     const modalContent = document.getElementById("modal-content-body");
     const modalClose = document.querySelector(".modal-close");
 
-    function renderProjects(filter = "all") {
+    function renderProjects() {
         if (!projectsContainer) return;
-        const list = filter === "all" ? PORTFOLIO_DATA.projects : PORTFOLIO_DATA.projects.filter(p => p.category === filter);
+        const list = PORTFOLIO_DATA.portfolioCategories || [];
         projectsContainer.innerHTML = list.map(p => `
-            <div class="project-card" data-project-id="${p.id}" tabindex="0" role="button" aria-label="View project details: ${p.title}">
-                <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"></div>
+            <article class="project-card category-card">
+                <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"
+                    style="object-position:${p.imagePositionX ?? 50}% ${p.imagePositionY ?? 50}%;--image-scale:${p.imageZoom ?? 1}"></div>
                 <div class="project-info">
                     <div class="project-meta">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
                     <h3 class="project-card-title font-syne">${p.title}</h3>
                     <p class="project-card-desc">${p.description}</p>
-                </div></div>`).join('');
+                    ${p.link
+                        ? `<a class="portfolio-link-btn font-syne" href="${p.link}" target="_blank" rel="noopener noreferrer">${p.linkLabel}<span aria-hidden="true">↗</span></a>`
+                        : `<span class="portfolio-link-btn is-disabled font-syne">${p.linkLabel}</span>`}
+                </div>
+            </article>`).join('');
         gsap.fromTo(".project-card", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" });
-        document.querySelectorAll(".project-card").forEach(card => {
-            const id = parseInt(card.getAttribute("data-project-id"));
-            card.addEventListener("click", () => openProjectDetails(id));
-            card.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openProjectDetails(id);
-                }
-            });
-        });
     }
     renderProjects();
-    document.querySelectorAll(".filter-btn").forEach(btn => btn.addEventListener("click", function () {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-        renderProjects(this.getAttribute("data-filter"));
-    }));
 
     function openProjectDetails(id) {
         const p = PORTFOLIO_DATA.projects.find(x => x.id === id);
@@ -350,26 +351,31 @@ function initApp() {
     // --- 7. (Hero motif is now integrated into full-site blooming background) ---
 
     // --- 8. COPY EMAIL ---
-    const emailBox = document.getElementById("email-click-box"), emailAddr = document.getElementById("email-addr"), copyStatus = document.getElementById("copy-status");
-    const handleEmailCopy = () => {
-        navigator.clipboard.writeText(emailAddr.innerText).then(() => {
-            copyStatus.innerText = "COPIED!"; emailBox.style.borderColor = "var(--text-primary)";
+    const emailBox = document.getElementById("email-click-box"), copyStatus = document.getElementById("copy-status");
+    const emailRows = document.querySelectorAll("[data-email-copy]");
+    const handleEmailCopy = row => {
+        const email = document.getElementById(row.dataset.emailCopy)?.innerText;
+        if (!email) return;
+        navigator.clipboard.writeText(email).then(() => {
+            copyStatus.innerText = "EMAIL COPIED!"; emailBox.style.borderColor = "var(--text-primary)";
             const ic = emailBox.querySelector(".copy-icon");
             if (ic && window.lucide) { ic.setAttribute("data-lucide", "check"); window.lucide.createIcons(); }
             setTimeout(() => {
-                copyStatus.innerText = "CLICK TO COPY"; emailBox.style.borderColor = "var(--border-subtle)";
+                copyStatus.innerText = "SELECT AN EMAIL"; emailBox.style.borderColor = "var(--border-subtle)";
                 if (ic && window.lucide) { ic.setAttribute("data-lucide", "copy"); window.lucide.createIcons(); }
             }, 2000);
         }).catch(e => console.error(e));
     };
 
-    if (emailBox && emailAddr && copyStatus) {
-        emailBox.addEventListener("click", handleEmailCopy);
-        emailBox.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleEmailCopy();
-            }
+    if (emailBox && emailRows.length && copyStatus) {
+        emailRows.forEach(row => {
+            row.addEventListener("click", () => handleEmailCopy(row));
+            row.addEventListener("keydown", event => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    handleEmailCopy(row);
+                }
+            });
         });
     }
 
@@ -378,7 +384,7 @@ function initApp() {
         instagram: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
         briefcase: `<i data-lucide="briefcase" style="width:18px;height:18px;"></i>`,
         linkedin: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`,
-        youtube: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17z"/><path d="m10 15 5-3-5-3z"/></svg>`,
+        facebook: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.5l.5-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
         github: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`
     };
     const slg = document.getElementById("social-links-grid");

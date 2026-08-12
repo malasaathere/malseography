@@ -1068,9 +1068,25 @@ section {
 /* --- SKILLS SECTION --- */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
     margin-bottom: 12rem;
+}
+
+.skills-grid .skill-card {
+    padding: 3.2rem 2.6rem;
+}
+
+.skills-grid .skill-card-title {
+    font-size: clamp(1.75rem, 1.6vw, 2.2rem);
+}
+
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .skill-card {
@@ -1397,8 +1413,16 @@ section {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 3.2rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+}
+
+.projects-grid .project-info {
+    padding: 2.4rem 2rem;
+}
+
+.projects-grid .project-card-title {
+    font-size: clamp(1.65rem, 1.5vw, 2rem);
 }
 
 .project-card {
@@ -1412,6 +1436,42 @@ section {
     transition: var(--transition-smooth);
     display: flex;
     flex-direction: column;
+}
+
+.category-card {
+    cursor: default;
+}
+
+.portfolio-link-btn {
+    min-height: 4.4rem;
+    margin-top: 2.4rem;
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.portfolio-link-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg-dark);
+}
+
+.portfolio-link-btn.is-disabled {
+    cursor: default;
+    color: var(--text-muted);
+    border-color: var(--border-subtle);
+}
+
+.portfolio-link-btn.is-disabled:hover {
+    background: transparent;
+    color: var(--text-muted);
 }
 
 .project-card:hover {
@@ -1433,12 +1493,13 @@ section {
     height: 100%;
     object-fit: cover;
     filter: grayscale(1) contrast(1.1) brightness(0.9);
+    transform: scale(var(--image-scale, 1));
     transition: var(--transition-smooth);
 }
 
 .project-card:hover .project-image {
     filter: grayscale(0) contrast(1) brightness(1);
-    transform: scale(1.05);
+    transform: scale(calc(var(--image-scale, 1) + 0.05));
 }
 
 .project-info {
@@ -1685,6 +1746,40 @@ section {
     letter-spacing: -0.01em;
 }
 
+.email-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.7rem;
+    padding: 0.8rem 1rem;
+    margin-left: -1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.email-row:hover,
+.email-row:focus-visible {
+    border-color: var(--border-light);
+    background: rgba(255, 255, 255, 0.025);
+    outline: none;
+}
+
+.email-kind {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.email-address-secondary {
+    color: var(--text-secondary);
+    font-size: clamp(1.45rem, 2vw, 2.1rem);
+    font-weight: 500;
+}
+
 .email-action {
     display: flex;
     align-items: center;
@@ -1759,6 +1854,20 @@ section {
     color: var(--text-primary);
     border-color: var(--border-light);
     background-color: rgba(255, 255, 255, 0.02);
+}
+
+@media (min-width: 769px) {
+    .social-grid {
+        width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .social-item {
+        flex: 1 1 0;
+        justify-content: center;
+        padding-inline: clamp(1.2rem, 2vw, 2.4rem);
+        white-space: nowrap;
+    }
 }
 
 /* --- FOOTER --- */
@@ -2182,6 +2291,7 @@ section {
     }
 
     .skills-grid,
+    .interests-grid,
     .projects-grid,
     .repos-grid {
         grid-template-columns: minmax(0, 1fr);
@@ -2192,7 +2302,8 @@ section {
         margin-bottom: 6rem;
     }
 
-    .skill-card {
+    .skill-card,
+    .skills-grid .skill-card {
         padding: 2.6rem 2.2rem;
     }
 
@@ -2257,7 +2368,8 @@ section {
         min-width: 0;
     }
 
-    .project-info {
+    .project-info,
+    .projects-grid .project-info {
         padding: 2.2rem;
     }
 
