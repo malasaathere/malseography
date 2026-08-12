@@ -9,6 +9,7 @@ const PORTFOLIO_DATA = {
         "fullName": "MALEESHA RAJASOORIYA",
         "title": "Welcome to Maleesha's Universe",
         "email": "smrajasooriya@gmail.com",
+        "secondaryEmail": "malseographydigitalspace@gmail.com",
         "tagline": "Obsessed with the process. Destined for the progress.",
         "heroSubtitle": "Creating digital experiences through design, motion, and visual storytelling, backed by secure and robust software architecture.",
         "socials": [
@@ -18,24 +19,19 @@ const PORTFOLIO_DATA = {
                 "icon": "github"
             },
             {
-                "name": "Behance",
-                "url": "https://behance.net",
-                "icon": "briefcase"
-            },
-            {
                 "name": "LinkedIn",
-                "url": "https://linkedin.com",
+                "url": "https://www.linkedin.com/in/maleesha-rajasooriya",
                 "icon": "linkedin"
             },
             {
                 "name": "Instagram",
-                "url": "https://instagram.com",
+                "url": "https://www.instagram.com/malseography/",
                 "icon": "instagram"
             },
             {
-                "name": "YouTube",
-                "url": "https://youtube.com",
-                "icon": "youtube"
+                "name": "Facebook",
+                "url": "https://web.facebook.com/maleseography/",
+                "icon": "facebook"
             }
         ]
     },
@@ -226,7 +222,7 @@ const PORTFOLIO_DATA = {
         {
             "id": "uiux",
             "title": "UI/UX Design",
-            "image": "assets/images/project1.png",
+            "image": "assets/images/uiux-imssa-media-cover.png",
             "imagePositionX": 50,
             "imagePositionY": 50,
             "imageZoom": 1,
@@ -242,7 +238,7 @@ const PORTFOLIO_DATA = {
         {
             "id": "graphic",
             "title": "Graphic Design",
-            "image": "assets/images/project2.png",
+            "image": "assets/images/graphic-design-medimate.jpeg",
             "imagePositionX": 50,
             "imagePositionY": 50,
             "imageZoom": 1,
@@ -258,7 +254,7 @@ const PORTFOLIO_DATA = {
         {
             "id": "video",
             "title": "Video Editing",
-            "image": "assets/images/project3.png",
+            "image": "assets/images/video-exposition-cover.png",
             "imagePositionX": 50,
             "imagePositionY": 50,
             "imageZoom": 1,
@@ -364,14 +360,19 @@ const PORTFOLIO_DATA = {
     ],
     "repos": [
         {
-            "title": "Pixel Rent System",
-            "description": "A robust backend system and digital camera renting application emphasizing database integrity.",
-            "url": "https://github.com/malasaathere"
+            "title": "MALSEOGRAPHY Portfolio Website",
+            "description": "The source code for this responsive portfolio, featuring a data-driven content system, interactive visual effects, and mobile-focused usability.",
+            "url": "https://github.com/malasaathere/malseography"
         },
         {
-            "title": "Interactive Design Components",
-            "description": "Functional, clean-code front-end UI kits and frameworks ready for deployment.",
-            "url": "https://github.com/malasaathere"
+            "title": "IMSSA Media Evaluation",
+            "description": "A media workflow and evaluation platform designed to organize responsibilities, review submissions, monitor progress, and support team coordination.",
+            "url": "https://github.com/malasaathere/IMSSA-Media-Evaluation"
+        },
+        {
+            "title": "TaskNova",
+            "description": "A practical task-management project where I worked on containerization and deployment, helping the application run consistently across environments and preparing it for reliable release.",
+            "url": "https://github.com/malasaathere/TaskNova2"
         }
     ],
     "githubProfileUrl": "https://github.com/malasaathere"

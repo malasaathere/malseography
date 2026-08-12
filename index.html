@@ -101,7 +101,7 @@
                 <a href="#skills" class="nav-link">Expertise</a>
                 <a href="#timeline" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
-                <a href="#repos" class="nav-link">Code</a>
+                    <a href="#repos" class="nav-link">Recent</a>
                 <a href="#contact" class="nav-link nav-btn">Let's Connect</a>
             </nav>
             <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
@@ -118,7 +118,7 @@
             <a href="#skills" class="mobile-link">Expertise</a>
             <a href="#timeline" class="mobile-link">Experience</a>
             <a href="#projects" class="mobile-link">Projects</a>
-            <a href="#repos" class="mobile-link">Code</a>
+            <a href="#repos" class="mobile-link">Recent</a>
             <a href="#contact" class="mobile-link">Contact</a>
         </nav>
     </div>
@@ -256,8 +256,8 @@
         <section class="repos-section" id="repos">
             <div class="container">
                 <div class="section-header-center">
-                    <h2 class="section-title font-syne text-center">CODE & REPOSITORIES</h2>
-                    <p class="section-desc text-center">Open-source projects and development work.</p>
+                    <h2 class="section-title font-syne text-center">RECENT PROJECTS &amp; REPOSITORIES</h2>
+                    <p class="section-desc text-center">Recent development work, practical systems, and deployment experience.</p>
                 </div>
 
                 <!-- Dynamic Repos List (Populated by app.js) -->
@@ -287,13 +287,20 @@
                     </div>
 
                     <!-- Copy Email Block -->
-                    <div class="email-banner" id="email-click-box" role="button" tabindex="0" aria-label="Copy email address">
+                    <div class="email-banner" id="email-click-box">
                         <div class="email-details">
-                            <span class="email-label">DIRECT EMAIL</span>
-                            <span class="email-address" id="email-addr">smrajasooriya@gmail.com</span>
+                            <span class="email-label">DIRECT EMAILS</span>
+                            <div class="email-row" role="button" tabindex="0" data-email-copy="email-addr" aria-label="Copy personal email address">
+                                <span class="email-kind">Personal</span>
+                                <span class="email-address" id="email-addr">smrajasooriya@gmail.com</span>
+                            </div>
+                            <div class="email-row" role="button" tabindex="0" data-email-copy="email-addr-secondary" aria-label="Copy creative email address">
+                                <span class="email-kind">Creative</span>
+                                <span class="email-address email-address-secondary" id="email-addr-secondary">malseographydigitalspace@gmail.com</span>
+                            </div>
                         </div>
                         <div class="email-action">
-                            <span class="copy-text" id="copy-status">CLICK TO COPY</span>
+                            <span class="copy-text" id="copy-status">SELECT AN EMAIL</span>
                             <i data-lucide="copy" class="copy-icon"></i>
                         </div>
                     </div>
