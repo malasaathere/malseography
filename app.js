@@ -210,6 +210,15 @@ function initApp() {
             <ul class="skill-focus-list">${s.focus.map(f => `<li class="skill-focus-item"><span class="skill-focus-dot"></span><span>${f}</span></li>`).join('')}</ul>
         </div>`).join('');
 
+    const interestsContainer = document.getElementById("interests-container");
+    if (interestsContainer && PORTFOLIO_DATA.interests) interestsContainer.innerHTML = PORTFOLIO_DATA.interests.map(s => `
+        <div class="skill-card interest-card" data-interest-id="${s.id}">
+            <div class="skill-icon-box"><i data-lucide="${s.icon}" style="width:32px;height:32px;"></i></div>
+            <h3 class="skill-card-title font-syne">${s.title}</h3>
+            <p class="skill-card-desc">${s.description}</p>
+            <ul class="skill-focus-list">${s.focus.map(f => `<li class="skill-focus-item"><span class="skill-focus-dot"></span><span>${f}</span></li>`).join('')}</ul>
+        </div>`).join('');
+
     // --- 4. TOOLS ---
     const CUSTOM_TOOL_ICONS = {
         "figma": `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;color:var(--text-muted);"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg>`,
@@ -276,35 +285,24 @@ function initApp() {
     const modalContent = document.getElementById("modal-content-body");
     const modalClose = document.querySelector(".modal-close");
 
-    function renderProjects(filter = "all") {
+    function renderProjects() {
         if (!projectsContainer) return;
-        const list = filter === "all" ? PORTFOLIO_DATA.projects : PORTFOLIO_DATA.projects.filter(p => p.category === filter);
+        const list = PORTFOLIO_DATA.portfolioCategories || [];
         projectsContainer.innerHTML = list.map(p => `
-            <div class="project-card" data-project-id="${p.id}" tabindex="0" role="button" aria-label="View project details: ${p.title}">
+            <article class="project-card category-card">
                 <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"></div>
                 <div class="project-info">
                     <div class="project-meta">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
                     <h3 class="project-card-title font-syne">${p.title}</h3>
                     <p class="project-card-desc">${p.description}</p>
-                </div></div>`).join('');
+                    ${p.link
+                        ? `<a class="portfolio-link-btn font-syne" href="${p.link}" target="_blank" rel="noopener noreferrer">${p.linkLabel}<span aria-hidden="true">↗</span></a>`
+                        : `<span class="portfolio-link-btn is-disabled font-syne">${p.linkLabel}</span>`}
+                </div>
+            </article>`).join('');
         gsap.fromTo(".project-card", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" });
-        document.querySelectorAll(".project-card").forEach(card => {
-            const id = parseInt(card.getAttribute("data-project-id"));
-            card.addEventListener("click", () => openProjectDetails(id));
-            card.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openProjectDetails(id);
-                }
-            });
-        });
     }
     renderProjects();
-    document.querySelectorAll(".filter-btn").forEach(btn => btn.addEventListener("click", function () {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-        renderProjects(this.getAttribute("data-filter"));
-    }));
 
     function openProjectDetails(id) {
         const p = PORTFOLIO_DATA.projects.find(x => x.id === id);

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MALSEOGRAPHY Project Editor</title>
+    <style>
+        :root { color-scheme: dark; font-family: Inter, Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #050505; color: #f4f4f4; }
+        header { position: sticky; top: 0; z-index: 2; padding: 22px clamp(20px, 5vw, 64px); background: rgba(5,5,5,.94); border-bottom: 1px solid #262626; backdrop-filter: blur(14px); }
+        header h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 38px); }
+        header p { margin: 0; color: #999; }
+        main { width: min(1200px, calc(100% - 32px)); margin: 36px auto 80px; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+        button, a.button { border: 1px solid #3b3b3b; border-radius: 6px; padding: 13px 18px; background: #111; color: #fff; font: inherit; cursor: pointer; text-decoration: none; }
+        button.primary { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+        .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+        article { padding: 24px; border: 1px solid #282828; border-radius: 8px; background: #0d0d0f; }
+        article h2 { margin: 0 0 20px; font-size: 20px; }
+        label { display: grid; gap: 7px; margin-bottom: 15px; color: #aaa; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+        input, textarea, select { width: 100%; border: 1px solid #333; border-radius: 5px; padding: 11px 12px; background: #070707; color: #fff; font: 15px/1.5 inherit; }
+        textarea { min-height: 88px; resize: vertical; }
+        .image-picker { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
+        .image-picker .browse { display: grid; place-items: center; margin: 0; padding: 0 16px; border: 1px solid #3b3b3b; border-radius: 5px; color: #fff; background: #171717; cursor: pointer; font-size: 13px; text-transform: none; letter-spacing: 0; }
+        .image-picker input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        .image-preview { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 16px; border: 1px solid #282828; border-radius: 6px; object-fit: cover; background: #070707; }
+        .image-help { margin: -6px 0 15px; color: #777; font-size: 12px; line-height: 1.5; }
+        .status { min-height: 24px; margin: 18px 0; color: #b7b7b7; }
+        .publish { margin-top: 30px; padding: 24px; border: 1px solid #282828; background: #0d0d0f; }
+        code { display: block; margin-top: 12px; padding: 14px; overflow-x: auto; background: #050505; color: #ddd; line-height: 1.8; }
+        @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Project Content Editor</h1>
+        <p>Edit the four portfolio categories and their Google Drive or Figma destinations, then publish with Git.</p>
+    </header>
+    <main>
+        <div class="toolbar">
+            <button class="primary" id="save-file">Save updated data.js</button>
+            <button id="download-file">Download data.js</button>
+            <a class="button" href="index.html">Open portfolio</a>
+        </div>
+        <p class="status" id="status" role="status"></p>
+        <div class="grid" id="editor-grid"></div>
+        <section class="publish">
+            <h2>Publish the changes</h2>
+            <p>After saving <strong>data.js</strong> inside this project, run:</p>
+            <code>git add data.js style.css projects-editor.html<br>git commit -m "Update portfolio projects"<br>git push origin main</code>
+        </section>
+    </main>
+    <script src="data.js"></script>
+    <script>
+        const fields = [
+            ['title', 'Category title'], ['image', 'Preview image path'],
+            ['description', 'Category description'], ['tags', 'Tags (comma separated)'],
+            ['link', 'Google Drive or Figma URL'], ['linkLabel', 'Button label']
+        ];
+        const projects = structuredClone(PORTFOLIO_DATA.portfolioCategories);
+        const grid = document.getElementById('editor-grid');
+        const status = document.getElementById('status');
+
+        function valueFor(project, key) {
+            if (key === 'tags') return project.tags.join(', ');
+            return project[key] || '';
+        }
+
+        grid.innerHTML = projects.map((project, index) => `
+            <article>
+                <h2>${project.title}</h2>
+                <img class="image-preview" data-preview-index="${index}" src="${project.image}" alt="${project.title} preview">
+                ${fields.map(([key, label]) => `
+                    <label>${label}
+                        ${key === 'image'
+                            ? `<span class="image-picker">
+                                <input data-index="${index}" data-key="${key}" value="${valueFor(project, key).replaceAll('&','&amp;').replaceAll('"','&quot;')}">
+                                <button class="browse" type="button" data-browse-index="${index}">Browse image</button>
+                                <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-image-file="${index}">
+                               </span>
+                               <span class="image-help">The selected file will use an assets/images/ path for publishing.</span>`
+                            : key === 'description'
+                            ? `<textarea data-index="${index}" data-key="${key}">${valueFor(project, key)}</textarea>`
+                            : `<input data-index="${index}" data-key="${key}" value="${valueFor(project, key).replaceAll('&','&amp;').replaceAll('"','&quot;')}">`}
+                    </label>`).join('')}
+            </article>`).join('');
+
+        grid.addEventListener('input', event => {
+            const input = event.target;
+            const project = projects[Number(input.dataset.index)];
+            const key = input.dataset.key;
+            if (!project || !key) return;
+            if (key === 'tags') project.tags = input.value.split(',').map(tag => tag.trim()).filter(Boolean);
+            else project[key] = input.value;
+            status.textContent = 'Unsaved changes';
+        });
+
+        grid.addEventListener('change', event => {
+            const picker = event.target;
+            if (!picker.matches('[data-image-file]') || !picker.files[0]) return;
+            const index = Number(picker.dataset.imageFile);
+            const file = picker.files[0];
+            const publishPath = `assets/images/${file.name.replaceAll(' ', '-')}`;
+            projects[index].image = publishPath;
+            const pathInput = grid.querySelector(`[data-index="${index}"][data-key="image"]`);
+            const preview = grid.querySelector(`[data-preview-index="${index}"]`);
+            pathInput.value = publishPath;
+            preview.src = URL.createObjectURL(file);
+            status.textContent = `Preview updated. Copy ${file.name} into assets/images before publishing.`;
+        });
+
+        grid.addEventListener('click', event => {
+            const button = event.target.closest('[data-browse-index]');
+            if (!button) return;
+            grid.querySelector(`[data-image-file="${button.dataset.browseIndex}"]`).click();
+        });
+
+        function updatedSource() {
+            const nextData = structuredClone(PORTFOLIO_DATA);
+            nextData.portfolioCategories = projects;
+            return `/**\n * CENTRALIZED PORTFOLIO DATA STORE (Source of Truth)\n * Edit this file to update portfolio content.\n */\n\nconst PORTFOLIO_DATA = ${JSON.stringify(nextData, null, 4)};\n`;
+        }
+
+        document.getElementById('save-file').addEventListener('click', async () => {
+            try {
+                if (!window.showSaveFilePicker) throw new Error('picker-unavailable');
+                const handle = await showSaveFilePicker({ suggestedName: 'data.js', types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }] });
+                const writable = await handle.createWritable();
+                await writable.write(updatedSource());
+                await writable.close();
+                status.textContent = 'Saved. Refresh the portfolio to review your changes.';
+            } catch (error) {
+                if (error.name !== 'AbortError') status.textContent = 'Direct save is unavailable here. Use “Download data.js” instead.';
+            }
+        });
+
+        document.getElementById('download-file').addEventListener('click', () => {
+            const url = URL.createObjectURL(new Blob([updatedSource()], { type: 'text/javascript' }));
+            const link = Object.assign(document.createElement('a'), { href: url, download: 'data.js' });
+            link.click();
+            URL.revokeObjectURL(url);
+            status.textContent = 'Downloaded data.js. Replace the project’s existing data.js before publishing.';
+        });
+    </script>
+</body>
+</html>

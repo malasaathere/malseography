@@ -53,79 +53,82 @@ const PORTFOLIO_DATA = {
         {
             id: "uiux",
             title: "UI/UX Design",
-            description: "Designing human-centered digital experiences that merge structural logic with premium visual aesthetics.",
+            description: "Clear, thoughtful interfaces shaped around real people. Every screen balances usability, structure, and visual clarity.",
             icon: "layout",
             focus: [
-                "User Research & Mapping",
-                "Wireframing & Interactive Prototyping",
-                "Figma Design Systems",
-                "Information Architecture",
-                "Usability & Accessibility (a11y) Audits"
+                "User Research",
+                "Wireframes & Prototypes",
+                "Design Systems",
+                "Accessible Experiences",
+                "Responsive Interface Design"
             ]
         },
         {
             id: "graphic",
             title: "Graphic Design",
-            description: "Crafting bold brand identities, minimalist marketing collateral, and high-impact visual statements, including dynamic event flyers.",
+            description: "Visual identities made to be remembered, not just noticed. Each design turns a simple idea into a distinct visual language.",
             icon: "pen-tool",
             focus: [
-                "Brand Strategy & Logo Design",
-                "Visual Identity Systems",
-                "Editorial & Poster Layouts",
-                "Digital Artwork Composition",
-                "Monochrome Color Harmonies"
-            ]
-        },
-        {
-            id: "software",
-            title: "Software Engineering",
-            description: "Transforming logical frameworks into robust digital realities through clean code, with experience building complete management systems.",
-            icon: "code",
-            focus: [
-                "Object-Oriented Programming (Java & Swing interfaces)",
-                "Node.js Backend Ecosystems",
-                "Relational Database Management (MySQL & JDBC integration)",
-                "System Integration & API Design",
-                "Interactive Front-End Components"
-            ]
-        },
-        {
-            id: "cybersecurity",
-            title: "Cybersecurity & Networking",
-            description: "Driven by a passion for data integrity, secure networks, and analytical problem-solving within IT infrastructures.",
-            icon: "shield",
-            focus: [
-                "Security Fundamentals & Audits",
-                "Network Protocols (TCP/IP models)",
-                "OSI Layer Architecture",
-                "Vulnerability Analysis",
-                "Secure Coding Practices"
+                "Brand Identity",
+                "Logo Design",
+                "Posters & Editorials",
+                "Digital Artwork",
+                "Campaign Visuals"
             ]
         },
         {
             id: "video",
             title: "Video Editing",
-            description: "Directing pacing, motion, sound, and color to weave compelling cinematic narratives, utilizing industry-standard tools like Premiere Pro and After Effects.",
+            description: "Stories shaped through rhythm, motion, sound, and color. Every edit is paced to hold attention and create emotion.",
             icon: "video",
             focus: [
-                "Cinematic Video Editing & Teaser Scripting",
-                "Advanced Motion Graphics (Saber effects & .mogrt templates)",
-                "Professional Color Grading",
-                "Sound Design & Spatial Audio Mix",
-                "Pacing & Story Development"
+                "Cinematic Editing",
+                "Motion Graphics",
+                "Color Grading",
+                "Sound & Pacing",
+                "Short-Form Storytelling"
             ]
         },
         {
             id: "photography",
             title: "Photography",
-            description: "Capturing light, structure, and human emotion through a minimalist and high-contrast lens, operating professional Sony and Fujifilm systems.",
+            description: "Honest moments framed through light, structure, and emotion. The focus stays on natural detail and cinematic atmosphere.",
             icon: "camera",
             focus: [
-                "Fine-Art Portraiture (Sony a7III & Fujifilm X-T30 II)",
-                "Cinematic Event Documentation",
-                "Landscape & Architectural Composition",
-                "Lighting & Studio Setup (Sigma lens optimization)",
-                "Professional Photo Editing"
+                "Portraits",
+                "Events",
+                "Architecture & Landscapes",
+                "Lighting & Retouching",
+                "Creative Composition"
+            ]
+        }
+    ],
+
+    interests: [
+        {
+            id: "software",
+            title: "Software Engineering",
+            description: "Exploring how clean logic becomes useful, reliable digital products. I enjoy turning ideas into structured systems that are practical, scalable, and easy to maintain.",
+            icon: "code",
+            focus: [
+                "Java & Object-Oriented Design",
+                "Node.js Backends",
+                "Databases & APIs",
+                "Interactive Frontends",
+                "System Architecture"
+            ]
+        },
+        {
+            id: "cybersecurity",
+            title: "Cybersecurity & Networking",
+            description: "Learning how thoughtful security creates stronger digital systems. My interest focuses on understanding networks, identifying risks, and building with protection in mind from the beginning.",
+            icon: "shield",
+            focus: [
+                "Security Fundamentals",
+                "Network Architecture",
+                "Vulnerability Analysis",
+                "Secure Coding",
+                "Data Integrity & Protection"
             ]
         }
     ],
@@ -145,31 +148,76 @@ const PORTFOLIO_DATA = {
             year: "2026 - Present",
             title: "Assistant Media Director",
             institution: "Industrial Management Science Students' Association (IMSSA)",
-            description: "Spearheading the overall media strategy, visual identity, and cinematic storytelling for the student body within the Department of Industrial Management. Overseeing digital campaigns, coordinating media teams, and guiding the creative direction for departmental initiatives."
+            description: "Helping lead the association's media direction, visual identity, and digital content for student events and initiatives. I support creative planning, coordinate visual work, and help maintain a consistent style across each campaign."
         },
         {
             year: "2025 - 2026",
             title: "UI/UX Designer & Systems Developer",
             institution: "University of Kelaniya - IdeaSprint & Independent Projects",
-            description: "Led the UI/UX design and interactive prototyping for the \"CeyLink\" project, securing a finalist position in the IdeaSprint 2025 intra-departmental hackathon. Independently engineered \"Pixel Rent,\" a complete camera renting system built with Java and MySQL, focusing on relational database management and structured inventory tracking."
+            description: "Designed the CeyLink user experience for IdeaSprint 2025 and built Pixel Rent, a Java and MySQL camera rental system. These projects strengthened my skills in user-focused design, prototyping, database planning, and practical software development."
         },
         {
             year: "2025 - 2026",
             title: "Level 1 Media Coordinator",
             institution: "Industrial Management Science Students' Association (IMSSA)",
-            description: "Handled foundational media tasks, digital content creation, and visual communication strategies to support intra-departmental events and ongoing student body initiatives prior to advancing to the Assistant Media Director role."
+            description: "Created visual content and supported media communication for departmental events and student activities. I worked on social media graphics, event promotions, and other creative materials while learning how to collaborate within a media team."
         },
         {
             year: "2025 - Present",
-            title: "Undergraduate Innovator & Technical Contributor",
-            institution: "University of Kelaniya",
-            description: "Pursuing studies merging industrial management with software development and cybersecurity protocols. Provided technical support for intra-departmental AI meetups and workshop series in collaboration with PyData."
+            title: "IT Undergraduate",
+            institution: "Department of Industrial Management, Faculty of Science, University of Kelaniya",
+            description: "Studying information technology while building practical skills in software development, cybersecurity, databases, and digital systems. I enjoy using technology and creative thinking to solve real problems and create useful digital experiences."
         },
         {
             year: "2024 - Present",
             title: "Freelance Photographer & Videographer",
             institution: "Independent Creative",
-            description: "Providing professional photography and cinematic video production services. Specializing in high-contrast fine-art portraiture, event documentation, promotional video campaigns, and advanced color grading using industry-standard equipment."
+            description: "Creating portraits, event photography, promotional videos, and cinematic edits for independent clients and creative projects. I focus on natural moments, strong composition, thoughtful color, and clear visual storytelling from planning through final delivery."
+        },
+        {
+            year: "2010 - 2023",
+            title: "G.C.E. O/L & A/L Education",
+            institution: "Harischandra National College, Negombo",
+            description: "Completed my school education, including the G.C.E. Ordinary Level and Advanced Level examinations, while building my academic and creative foundation."
+        }
+    ],
+
+    portfolioCategories: [
+        {
+            id: "uiux",
+            title: "UI/UX Design",
+            image: "assets/images/project1.png",
+            description: "Selected interface concepts, user flows, prototypes, and design systems focused on clear and useful digital experiences.",
+            tags: ["Interface Design", "UX Research", "Prototyping"],
+            link: "",
+            linkLabel: "Figma Projects Coming Soon"
+        },
+        {
+            id: "graphic",
+            title: "Graphic Design",
+            image: "assets/images/project2.png",
+            description: "A collection of brand identities, campaign visuals, posters, layouts, and digital artwork created for different audiences.",
+            tags: ["Brand Identity", "Campaigns", "Digital Art"],
+            link: "",
+            linkLabel: "View Graphic Design Drive"
+        },
+        {
+            id: "video",
+            title: "Video Editing",
+            image: "assets/images/project3.png",
+            description: "Cinematic edits, promotional content, motion graphics, and short-form stories shaped through pacing, sound, and color.",
+            tags: ["Editing", "Motion Graphics", "Color Grading"],
+            link: "",
+            linkLabel: "View Video Portfolio Drive"
+        },
+        {
+            id: "photography",
+            title: "Photography",
+            image: "assets/images/project6.png",
+            description: "Portraits, events, environments, and visual moments captured with an emphasis on natural detail and cinematic atmosphere.",
+            tags: ["Portraits", "Events", "Creative Frames"],
+            link: "",
+            linkLabel: "View Photography Drive"
         }
     ],
 
