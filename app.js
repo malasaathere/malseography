@@ -290,7 +290,8 @@ function initApp() {
         const list = PORTFOLIO_DATA.portfolioCategories || [];
         projectsContainer.innerHTML = list.map(p => `
             <article class="project-card category-card">
-                <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"></div>
+                <div class="project-image-box"><img src="${p.image}" alt="${p.title}" class="project-image" loading="lazy"
+                    style="object-position:${p.imagePositionX ?? 50}% ${p.imagePositionY ?? 50}%;--image-scale:${p.imageZoom ?? 1}"></div>
                 <div class="project-info">
                     <div class="project-meta">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
                     <h3 class="project-card-title font-syne">${p.title}</h3>

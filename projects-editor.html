@@ -26,10 +26,17 @@
         .image-picker input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
         .image-preview { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 16px; border: 1px solid #282828; border-radius: 6px; object-fit: cover; background: #070707; }
         .image-help { margin: -6px 0 15px; color: #777; font-size: 12px; line-height: 1.5; }
+        .position-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+        .position-controls label { margin: 0; }
+        .position-controls output { color: #fff; font-size: 12px; }
+        input[type="range"] { padding: 0; accent-color: #fff; }
         .status { min-height: 24px; margin: 18px 0; color: #b7b7b7; }
         .publish { margin-top: 30px; padding: 24px; border: 1px solid #282828; background: #0d0d0f; }
+        .save-all-wrap { position: sticky; bottom: 16px; z-index: 3; display: flex; justify-content: center; margin: 30px 0; pointer-events: none; }
+        .save-all-wrap button { min-width: min(100%, 320px); padding: 16px 24px; box-shadow: 0 14px 40px rgba(0,0,0,.6); pointer-events: auto; }
         code { display: block; margin-top: 12px; padding: 14px; overflow-x: auto; background: #050505; color: #ddd; line-height: 1.8; }
         @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .position-controls { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -45,6 +52,9 @@
         </div>
         <p class="status" id="status" role="status"></p>
         <div class="grid" id="editor-grid"></div>
+        <div class="save-all-wrap">
+            <button class="primary" id="save-all">Save All Changes</button>
+        </div>
         <section class="publish">
             <h2>Publish the changes</h2>
             <p>After saving <strong>data.js</strong> inside this project, run:</p>
@@ -70,7 +80,21 @@
         grid.innerHTML = projects.map((project, index) => `
             <article>
                 <h2>${project.title}</h2>
-                <img class="image-preview" data-preview-index="${index}" src="${project.image}" alt="${project.title} preview">
+                <div class="image-preview" style="overflow:hidden">
+                    <img data-preview-index="${index}" src="${project.image}" alt="${project.title} preview"
+                        style="width:100%;height:100%;object-fit:cover;object-position:${project.imagePositionX ?? 50}% ${project.imagePositionY ?? 50}%;transform:scale(${project.imageZoom ?? 1})">
+                </div>
+                <div class="position-controls">
+                    <label>Horizontal <output data-output="x-${index}">${project.imagePositionX ?? 50}%</output>
+                        <input type="range" min="0" max="100" value="${project.imagePositionX ?? 50}" data-image-control="x" data-index="${index}">
+                    </label>
+                    <label>Vertical <output data-output="y-${index}">${project.imagePositionY ?? 50}%</output>
+                        <input type="range" min="0" max="100" value="${project.imagePositionY ?? 50}" data-image-control="y" data-index="${index}">
+                    </label>
+                    <label>Zoom <output data-output="zoom-${index}">${project.imageZoom ?? 1}×</output>
+                        <input type="range" min="1" max="1.8" step="0.05" value="${project.imageZoom ?? 1}" data-image-control="zoom" data-index="${index}">
+                    </label>
+                </div>
                 ${fields.map(([key, label]) => `
                     <label>${label}
                         ${key === 'image'
@@ -89,6 +113,19 @@
         grid.addEventListener('input', event => {
             const input = event.target;
             const project = projects[Number(input.dataset.index)];
+            const imageControl = input.dataset.imageControl;
+            if (project && imageControl) {
+                const preview = grid.querySelector(`[data-preview-index="${input.dataset.index}"]`);
+                if (imageControl === 'x') project.imagePositionX = Number(input.value);
+                if (imageControl === 'y') project.imagePositionY = Number(input.value);
+                if (imageControl === 'zoom') project.imageZoom = Number(input.value);
+                preview.style.objectPosition = `${project.imagePositionX ?? 50}% ${project.imagePositionY ?? 50}%`;
+                preview.style.transform = `scale(${project.imageZoom ?? 1})`;
+                const suffix = imageControl === 'zoom' ? '×' : '%';
+                grid.querySelector(`[data-output="${imageControl}-${input.dataset.index}"]`).textContent = `${input.value}${suffix}`;
+                status.textContent = 'Image placement changed — remember to save data.js.';
+                return;
+            }
             const key = input.dataset.key;
             if (!project || !key) return;
             if (key === 'tags') project.tags = input.value.split(',').map(tag => tag.trim()).filter(Boolean);
@@ -122,7 +159,7 @@
             return `/**\n * CENTRALIZED PORTFOLIO DATA STORE (Source of Truth)\n * Edit this file to update portfolio content.\n */\n\nconst PORTFOLIO_DATA = ${JSON.stringify(nextData, null, 4)};\n`;
         }
 
-        document.getElementById('save-file').addEventListener('click', async () => {
+        async function saveDataFile() {
             try {
                 if (!window.showSaveFilePicker) throw new Error('picker-unavailable');
                 const handle = await showSaveFilePicker({ suggestedName: 'data.js', types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }] });
@@ -133,7 +170,10 @@
             } catch (error) {
                 if (error.name !== 'AbortError') status.textContent = 'Direct save is unavailable here. Use “Download data.js” instead.';
             }
-        });
+        }
+
+        document.getElementById('save-file').addEventListener('click', saveDataFile);
+        document.getElementById('save-all').addEventListener('click', saveDataFile);
 
         document.getElementById('download-file').addEventListener('click', () => {
             const url = URL.createObjectURL(new Blob([updatedSource()], { type: 'text/javascript' }));
